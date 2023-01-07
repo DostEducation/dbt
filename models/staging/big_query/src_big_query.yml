@@ -1,0 +1,22 @@
+version: 2
+
+sources:
+  - name: unified_data_source
+    description: unified data source on Dost Education Big Query
+    database: cryptic-gate-211900
+    schema: unified_data_source
+    tables:
+      - name: ivr_prompt_response
+        description: add here
+        columns:
+          - name: uuid
+            description: primary key for ivr promt response
+            tests:
+              - unique
+              - not_null
+          - name: data_source
+          - name: id
+          - name: call_sid
+          - name: call_log_id
+          - name: keypress
+          
