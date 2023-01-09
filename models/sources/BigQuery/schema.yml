@@ -1,0 +1,12 @@
+version: 2
+
+sources:
+  - name: unified_data_source
+    database: cryptic-gate-211900
+    schema: unified_data_source
+    tables:
+      - name: ivr_prompt_response
+      - name: all_call_records
+      - name: program_sequence
+      - name: content_version
+      - name: content
