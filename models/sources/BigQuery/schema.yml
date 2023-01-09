@@ -10,3 +10,4 @@ sources:
       - name: program_sequence
       - name: content_version
       - name: content
+      - name: program
