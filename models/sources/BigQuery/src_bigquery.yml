@@ -4,7 +4,7 @@ sources:
   - name: unified_data_source
     description: unified data source on Dost Education Big Query
     database: cryptic-gate-211900
-    schema: unified_data_source
+    schema: data_engineering_staging
     tables:
       - name: all_call_records
       - name: content_version
