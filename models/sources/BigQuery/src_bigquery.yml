@@ -32,5 +32,5 @@ sources:
       - name: src_outcomes
       - name: src_indicators
       - name: src_questions
-      - name: src_question_placements
+      - name: src_question_placement
       - name: src_configured_responses
