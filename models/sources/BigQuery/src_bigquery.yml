@@ -1,0 +1,36 @@
+version: 2
+
+sources:
+  - name: unified_data_source
+    description: unified data source on Dost Education Big Query
+    database: cryptic-gate-211900
+    schema: data_engineering_staging
+    tables:
+      - name: all_call_records
+      - name: content_version
+      - name: content
+      - name: program_sequence
+      - name: program
+      - name: ivr_prompt_response
+        description: add here
+        columns:
+          - name: uuid
+            description: primary key for ivr promt response
+            tests:
+              - unique
+              - not_null
+          - name: data_source
+          - name: id
+          - name: call_sid
+          - name: call_log_id
+          - name: keypress
+  - name: prompt_configs
+    description: prompt configs ingested from Google Sheets into Big Query via Airbyte
+    database: cryptic-gate-211900
+    schema: data_engineering_staging
+    tables:
+      - name: src_outcomes
+      - name: src_indicators
+      - name: src_questions
+      - name: src_question_placements
+      - name: src_configured_responses
