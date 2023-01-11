@@ -110,6 +110,8 @@ sources:
         freshness:
           warn_after: {count: 12, period: hour}
           error_after: {count: 24, period: hour}
+      - name: registration
+      - name: program_wise_engagement
   - name: prompt_configs
     description: prompt configs ingested from Google Sheets into Big Query via Airbyte
     database: cryptic-gate-211900
