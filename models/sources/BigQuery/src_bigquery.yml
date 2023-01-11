@@ -7,12 +7,94 @@ sources:
     schema: data_engineering_staging
     tables:
       - name: all_call_records
+        description: All call records of a user who is been signed up for the program
+        columns:
+          - name: uuid
+            description: Primary key for all_call_records
+            tests:
+              - unique
+              - not_null
+          - name: data_source
+          - name: call_sid
+          - name: content_name
+          - name: call_start_time
+          - name: call_end_time
+          - name: duration
+        loaded_at_field: _etl_loaded_at
+        freshness:
+          warn_after: {count: 12, period: hour}
+          error_after: {count: 24, period: hour}
       - name: content_version
+        description: Version of the content that is being used when a user calls
+        columns:
+          - name: uuid
+            description: Primary key for content_version
+            tests:
+              - unique
+              - not_null
+          - name: data_source
+          - name: id
+          - name: duration
+          - name: status
+          - name: version
+        loaded_at_field: _etl_loaded_at
+        freshness:
+          warn_after: {count: 12, period: hour}
+          error_after: {count: 24, period: hour}
       - name: content
+        description: The content that is actually being used over the phone when the user calls
+        columns:
+          - name: uuid
+            description: Primary key for content
+            tests:
+              - unique
+              - not_null
+          - name: data_source
+          - name: id
+          - name: name
+          - name: type
+        loaded_at_field: _etl_loaded_at
+        freshness:
+          warn_after: {count: 12, period: hour}
+          error_after: {count: 24, period: hour}
       - name: program_sequence
+        description: The sequence in which the program being used.
+        columns:
+          - name: uuid
+            description: Primary key for program_sequence
+            tests:
+              - unique
+              - not_null
+          - name: data_source
+          - name: id
+          - name: content_id
+          - name: day
+          - name: sequence_index
+        loaded_at_field: _etl_loaded_at
+        freshness:
+          warn_after: {count: 12, period: hour}
+          error_after: {count: 24, period: hour}
       - name: program
+        description: The programs that are used according to the user type(ex, T3, B6)
+        columns:
+          - name: uuid
+            description: Primary Key for table program
+            tests:
+            - unique
+            - not_null
+          - name: data_source
+          - name: id
+          - name: description
+          - name: status
+          - name: type
+          - name: start_date
+          - name: end_date
+        loaded_at_field: _etl_loaded_at
+        freshness:
+          warn_after: {count: 12, period: hour}
+          error_after: {count: 24, period: hour}
       - name: ivr_prompt_response
-        description: add here
+        description: Responses captured of the prompt questions from the users 
         columns:
           - name: uuid
             description: primary key for ivr promt response
@@ -24,6 +106,10 @@ sources:
           - name: call_sid
           - name: call_log_id
           - name: keypress
+        loaded_at_field: _etl_loaded_at
+        freshness:
+          warn_after: {count: 12, period: hour}
+          error_after: {count: 24, period: hour}
   - name: prompt_configs
     description: prompt configs ingested from Google Sheets into Big Query via Airbyte
     database: cryptic-gate-211900
