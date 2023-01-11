@@ -1,4 +1,13 @@
 select
-    *
-from {{ source('unified_data_source', 'ivr_prompt_response') }}
-where migrated_on <= CURRENT_TIMESTAMP() - INTERVAL 100 MINUTE
+    id as prompt_response_id,
+    uuid as prompt_response_uuid,
+    data_source,
+    keypress,
+    call_log_id,
+    call_sid,
+    datetime(
+        ivr_prompt_response.created_on, 'Asia/Kolkata'
+    ) as ivr_prompt_response_created_on,
+    response as webhook_response_value
+from {{ source("unified_data_source", "ivr_prompt_response") }}
+where migrated_on <= current_timestamp() - interval 100 minute
