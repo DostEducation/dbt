@@ -12,6 +12,7 @@ with
             ivr_prompt_response.*,
             all_call_records.program_sequence_id,
             all_call_records.content_version_id,
+            all_call_records.user_id,
             program_sequence.program_id,
             program_sequence.module_id,
             content_version.content_id,
