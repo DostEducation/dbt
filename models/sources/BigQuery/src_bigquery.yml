@@ -4,7 +4,7 @@ sources:
   - name: unified_data_source
     description: unified data source on Dost Education Big Query
     database: cryptic-gate-211900
-    schema: data_engineering_staging
+    schema: unified_data_source
     tables:
       - name: all_call_records
         description: All call records of a user who is been signed up for the program
@@ -112,6 +112,7 @@ sources:
           error_after: {count: 24, period: hour}
       - name: registration
       - name: program_wise_engagement
+      - name: partner
   - name: prompt_configs
     description: prompt configs ingested from Google Sheets into Big Query via Airbyte
     database: cryptic-gate-211900
