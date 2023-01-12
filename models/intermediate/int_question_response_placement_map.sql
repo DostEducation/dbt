@@ -14,7 +14,9 @@ with
     question_placement as (select * from {{ ref("stg_question_placement") }}),
 
     join_all_tables as (
-        select *
+        select
+            *,
+            if(evaluation_phase = 'Baseline', question_id, parent_question_id) as baseline_question_id
         from
             questions
             left join configured_responses using (question_id)

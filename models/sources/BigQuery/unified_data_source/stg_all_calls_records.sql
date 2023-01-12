@@ -5,7 +5,8 @@ with
             data_source,
             unified_call_id,
             program_sequence_id,
-            content_version_id
+            content_version_id,
+            user_id,
         from {{ source("unified_data_source", "all_call_records") }}
     -- where migrated_on <= CURRENT_TIMESTAMP() - INTERVAL 100 MINUTE
     )
