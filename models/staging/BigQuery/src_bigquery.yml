@@ -20,10 +20,17 @@ sources:
           - name: call_start_time
           - name: call_end_time
           - name: duration
+<<<<<<< HEAD
+        loaded_at_field: migrated_on
+        freshness:
+          warn_after: {count: 12, period: hour}
+          error_after: {count: 24, period: hour}
+=======
         # loaded_at_field: _etl_loaded_at
         # freshness:
           # warn_after: {count: 12, period: hour}
           # error_after: {count: 24, period: hour}
+>>>>>>> e807874f9c48d31751579abab447a46c5a86a6ca
       - name: content_version
         description: Version of the content that is being used when a user calls
         columns:
@@ -90,7 +97,11 @@ sources:
           - name: call_sid
           - name: call_log_id
           - name: keypress
+<<<<<<< HEAD
+        loaded_at_field: migrated_on
+=======
         loaded_at_field: created_on
+>>>>>>> e807874f9c48d31751579abab447a46c5a86a6ca
         freshness:
           warn_after: {count: 12, period: hour}
           error_after: {count: 24, period: hour}
@@ -103,7 +114,95 @@ sources:
     schema: data_engineering_staging
     tables:
       - name: src_outcomes
+        description: This table displays the different outcomes reached via the program 
+        columns:
+          - name: id
+            description: Primary Key for outcomes
+          - name: spectrum
+            description: Time duration on when to implement the outcome_name
+          - name: outcome_name
+          - name: count_of_indicators
+            description: column used to map outcomes table from indicators table
       - name: src_indicators
+        description: Describes user attributes sub categorized into different topics
+        columns:
+          - name: id
+            description: Primary Key for table `indicators`
+          - name: type
+            description: User Attributes
+          - name: outcome_id
+            description: outcome id mapped to indicators_name
+          - name: indicator_name
+            description: Name of the indicator
+          - name: outcome_name_lookup
+            description: This column is only used to map the indicator table
+          - name: outcome_spectrum_lookup
+            description: This column is only used to map the indicator table
+          - name: count_of_questions_mapped
+            description: This column is only used to map the indicator table
       - name: src_questions
+<<<<<<< HEAD
+        description: This table tells us what questions will be asked as a prompt over the call in the program
+        columns:
+          - name: id
+            description: Primary Key for table 'questions'
+          - name: status
+            description: This columns tells us whether the question is active or not as prompt question
+          - name: short_name
+          - name: indicator_id
+            description: Indicator table mapped to the questions
+          - name: question_hindi
+            description: Questions used as a prompt in Hindi Language
+          - name: activation_date
+            description: When was the question got activated for the respective program
+          - name: evaluation_phase
+            description: questions that are directed to the user at different level of programs 
+          - name: question_english
+            description: Questions used as a prompt in English Language
+          - name: deactivation_date
+            description: The date at which the question got deactivated from the program
+          - name: count_of_placements
+            description: This column tells us how many questions are there at a particular evaluation phase
+          - name: count_of_configured_responses
+            description: This column tells us how many responses have been mapped to a particular question
+      - name: src_question_placements
+        description: This table shows what questions are mapped to what table of the data model in the program
+        columns: 
+          - name: id
+            description: Primary Key for table 'question placements'
+          - name: status
+            description: This column tells you the status of question placements 
+          - name: content_id
+            description: This column tells you what content is mapped to what questions
+          - name: data_source
+            description: The columns show what data source that is being used 
+          - name: question_id
+            description: The columns show what questions are mapped
+          - name: activation_date
+            description: When was the question got activated
+          - name: deactivation_date
+            description: When was the question got deactivated
+          - name: program_sequence_id
+            description: This column shows what program sequence id is mapped
+      - name: src_configured_responses
+        description: The tables shows the responses that are being mapped to their respective questions
+        columns:
+          - name: id
+            description: Primary Key for table 'configured responses'
+          - name: keypress
+            description: This column shows what key number the user has given
+          - name: short_name
+            description: Short Name of the entire program(question, content, evaluation phase)
+          - name: question_id
+            description: Question id mapped to the answer a user has given by pressing the key
+          - name: response_eng
+            description: Response of the user in English
+          - name: response_hin
+            description: Response of the user in Hindi
+          - name: desired_response
+            description: The response that is desired from the user
+          - name: webhook_resp_val
+=======
       - name: src_question_placement
       - name: src_configured_responses
+>>>>>>> e807874f9c48d31751579abab447a46c5a86a6ca
