@@ -20,11 +20,14 @@ sources:
           - name: call_start_time
           - name: call_end_time
           - name: duration
+<<<<<<< HEAD:models/sources/BigQuery/src_bigquery.yml
 
         loaded_at_field: migrated_on
         freshness:
           warn_after: {count: 12, period: hour}
           error_after: {count: 24, period: hour}
+=======
+>>>>>>> 5b086bb0c1b1ef12b3081b7054e5989c67667e13:models/staging/BigQuery/src_bigquery.yml
         # loaded_at_field: _etl_loaded_at
         # freshness:
           # warn_after: {count: 12, period: hour}
@@ -158,7 +161,7 @@ sources:
             description: This column tells us how many questions are there at a particular evaluation phase
           - name: count_of_configured_responses
             description: This column tells us how many responses have been mapped to a particular question
-      - name: src_question_placements
+      - name: src_question_placement
         description: This table shows what questions are mapped to what table of the data model in the program
         columns: 
           - name: id
@@ -195,4 +198,7 @@ sources:
           - name: desired_response
             description: The response that is desired from the user
           - name: webhook_resp_val
+<<<<<<< HEAD:models/sources/BigQuery/src_bigquery.yml
       - name: src_question_placement
+=======
+>>>>>>> 5b086bb0c1b1ef12b3081b7054e5989c67667e13:models/staging/BigQuery/src_bigquery.yml
