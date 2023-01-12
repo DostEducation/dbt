@@ -1,127 +1,122 @@
 version: 2
 
-sources:
-  - name: unified_data_source
-    description: unified data source on Dost Education Big Query
-    database: cryptic-gate-211900
-    schema: unified_data_source
-    tables:
-      - name: stg_all_call_records
-        description: All call records of a user who is been signed up for the program
-        columns:
-          - name: uuid
-            description: Primary key for all_call_records and name is changed to all_call_record_uuid
-            tests:
-              - unique
-              - not_null
-          - name: data_source
-          - name: call_sid
-          - name: content_name
-          - name: call_start_time
-          - name: call_end_time
-          - name: duration
+models:
+  - name: stg_all_call_records
+    description: All call records of a user who is been signed up for the program
+    columns:
+      - name: uuid
+        description: Primary key for all_call_records and name is changed to all_call_record_uuid
+        tests:
+          - unique
+          - not_null
+      - name: data_source
+      - name: call_sid
+      - name: content_name
+      - name: call_start_time
+      - name: call_end_time
+      - name: duration
 
-        loaded_at_field: migrated_on
-        freshness:
-          warn_after: {count: 12, period: hour}
-          error_after: {count: 24, period: hour}
-        # loaded_at_field: _etl_loaded_at
-        # freshness:
-          # warn_after: {count: 12, period: hour}
-          # error_after: {count: 24, period: hour}
-      - name: stg_content_version
-        description: Version of the content that is being used when a user calls
-        columns:
-          - name: uuid
-            description: Primary key for content_version
-            tests:
-              - unique
-              - not_null
-          - name: data_source
-          - name: id
-            description: content_version_id
-          - name: duration
-          - name: status
-          - name: version
-      - name: stg_content
-        description: The content that is actually being used over the phone when the user calls
-        columns:
-          - name: uuid
-            description: Primary key for content
-            tests:
-              - unique
-              - not_null
-          - name: data_source
-          - name: id
-            description: content_id
-          - name: name
-          - name: type
-      - name: stg_program_sequence
-        description: The sequence in which the program being used.
-        columns:
-          - name: uuid
-            description: Primary key for program_sequence
-            tests:
-              - unique
-              - not_null
-          - name: data_source
-          - name: id
-            description: program_sequence_id
-          - name: content_id
-          - name: day
-          - name: sequence_index
-      - name: stg_program
-        description: The programs that are used according to the user type(ex, T3, B6)
-        columns:
-          - name: uuid
-            description: Primary Key for table program
-            tests:
-            - unique
-            - not_null
-          - name: data_source
-          - name: id
-            description: program_id
-          - name: description
-          - name: status
-          - name: type
-          - name: start_date
-          - name: end_date
-      - name: stg_ivr_prompt_response
-        description: Responses captured of the prompt questions from the users 
-        columns:
-          - name: uuid
-            description: primary key for ivr promt response and named as prompt_response_uuid
-            tests:
-              - unique
-              - not_null
-          - name: data_source
-          - name: id
-            description: prompt_response_id
-          - name: call_sid
-          - name: call_log_id
-          - name: keypress
-        loaded_at_field: created_on
-        freshness:
-          warn_after: {count: 12, period: hour}
-          error_after: {count: 24, period: hour}
-      - name: stg_registration
-        description: Number of registrations done by each volunteers
-        columns: 
-          - name: uuid
-            description: Primary key for table registration
-            tests:
-              - unique
-              - not_null
-      - name: stg_program_wise_engagement
-        description: Shows what level of user engagement is there program wise
-        columns:
-          - name: user_id
-            description: Primary key for table program wise engagement
-      - name: stg_partner
-        description: Tells you what different partners are involved that is ivr or admindashboard
-        columns: 
-          - name: partner_id
-            description: Primary key for this table
-            tests:
-              - unique
-              - not_null
+    loaded_at_field: migrated_on
+    freshness:
+      warn_after: {count: 12, period: hour}
+      error_after: {count: 24, period: hour}
+    # loaded_at_field: _etl_loaded_at
+    # freshness:
+      # warn_after: {count: 12, period: hour}
+      # error_after: {count: 24, period: hour}
+  - name: stg_content_version
+    description: Version of the content that is being used when a user calls
+    columns:
+      - name: uuid
+        description: Primary key for content_version
+        tests:
+          - unique
+          - not_null
+      - name: data_source
+      - name: id
+        description: content_version_id
+      - name: duration
+      - name: status
+      - name: version
+  - name: stg_content
+    description: The content that is actually being used over the phone when the user calls
+    columns:
+      - name: uuid
+        description: Primary key for content
+        tests:
+          - unique
+          - not_null
+      - name: data_source
+      - name: id
+        description: content_id
+      - name: name
+      - name: type
+  - name: stg_program_sequence
+    description: The sequence in which the program being used.
+    columns:
+      - name: uuid
+        description: Primary key for program_sequence
+        tests:
+          - unique
+          - not_null
+      - name: data_source
+      - name: id
+        description: program_sequence_id
+      - name: content_id
+      - name: day
+      - name: sequence_index
+  - name: stg_program
+    description: The programs that are used according to the user type(ex, T3, B6)
+    columns:
+      - name: uuid
+        description: Primary Key for table program
+        tests:
+        - unique
+        - not_null
+      - name: data_source
+      - name: id
+        description: program_id
+      - name: description
+      - name: status
+      - name: type
+      - name: start_date
+      - name: end_date
+  - name: stg_ivr_prompt_response
+    description: Responses captured of the prompt questions from the users 
+    columns:
+      - name: uuid
+        description: primary key for ivr promt response and named as prompt_response_uuid
+        tests:
+          - unique
+          - not_null
+      - name: data_source
+      - name: id
+        description: prompt_response_id
+      - name: call_sid
+      - name: call_log_id
+      - name: keypress
+    loaded_at_field: created_on
+    freshness:
+      warn_after: {count: 12, period: hour}
+      error_after: {count: 24, period: hour}
+  - name: stg_registration
+    description: Number of registrations done by each volunteers
+    columns: 
+      - name: uuid
+        description: Primary key for table registration
+        tests:
+          - unique
+          - not_null
+  - name: stg_program_wise_engagement
+    description: Shows what level of user engagement is there program wise
+    columns:
+      - name: user_id
+        description: Primary key for table program wise engagement
+  - name: stg_partner
+    description: Tells you what different partners are involved that is ivr or admindashboard
+    columns: 
+      - name: partner_id
+        description: Primary key for this table
+        tests:
+          - unique
+          - not_null

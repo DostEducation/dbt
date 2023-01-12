@@ -1,0 +1,41 @@
+version: 2
+
+models:
+  - name: int_baseline_question_map
+    columns: 
+       - name: baseline_question_id
+         description: "The primary key for this table"
+         tests:
+           - unique
+           - not_null
+  - name: int_panel_users
+    columns:
+      - name: user_id
+        description: "The primary key for this table"
+        tests:
+           - unique
+           - not_null
+  - name: int_parse_prompt_responses
+    # description:
+    columns:
+      - name: prompt_response_id
+        description: "The primary key for this table"
+        tests:
+           - unique
+           - not_null
+  - name: int_question_prompt_responses
+    # description:
+    columns: 
+      - name: question_id
+        description: "The primary key for this table"
+        tests:
+           - unique
+           - not_null
+  - name: int_user_dimensions
+    # description:
+    columns:
+      - name: uuid
+        description: "The primary key for this table"
+        tests:
+           - unique
+           - not_null
