@@ -84,13 +84,13 @@ models:
   - name: stg_ivr_prompt_response
     description: Responses captured of the prompt questions from the users 
     columns:
-      - name: uuid
+      - name: prompt_response_uuid
         description: primary key for ivr promt response and named as prompt_response_uuid
         tests:
           - unique
           - not_null
       - name: data_source
-      - name: id
+      - name: prompt_response_id
         description: prompt_response_id
       - name: call_sid
       - name: call_log_id

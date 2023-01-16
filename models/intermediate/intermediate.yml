@@ -18,7 +18,7 @@ models:
   - name: int_parse_prompt_responses
     # description:
     columns:
-      - name: prompt_response_id
+      - name: prompt_response_uuid
         description: "The primary key for this table"
         tests:
            - unique
