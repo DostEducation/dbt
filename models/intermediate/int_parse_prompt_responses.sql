@@ -11,9 +11,9 @@ with
     parse_prompt_responses as (
         select
             ivr_prompt_response.*,
-            -- all_call_records.program_sequence_id,
-            -- all_call_records.content_version_id,
-            -- all_call_records.user_id,
+            all_call_records.program_sequence_id,
+            all_call_records.content_version_id,
+            all_call_records.user_id,
             -- program_sequence.program_id,
             -- program_sequence.module_id,
             -- program.* except (program_id, data_source),
@@ -21,7 +21,7 @@ with
             -- content.* except (content_id, data_source),
             -- q_r_p_map.* except (keypress, data_source, program_sequence_id, content_id, webhook_response_value)
         from ivr_prompt_response
-        -- left join all_call_records using (unified_call_id, data_source)
+        left join all_call_records using (unified_call_id, data_source)
         -- left join program_sequence using (program_sequence_id, data_source)
         -- left join program using (program_id, data_source)
         -- left join content_version using (content_version_id, data_source)
@@ -50,3 +50,4 @@ with
 
 select *
 from parse_prompt_responses
+-- where data_source = 'rp_ivr'

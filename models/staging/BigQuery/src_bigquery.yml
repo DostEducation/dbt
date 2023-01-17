@@ -6,6 +6,8 @@ sources:
     database: cryptic-gate-211900
     schema: unified_data_source
     tables:
+      - name: campaign
+      - name: call_log
       - name: all_call_records
         description: All call records of a user who is been signed up for the program
         columns:
