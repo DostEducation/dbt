@@ -23,60 +23,53 @@ models:
   - name: stg_content_version
     description: Version of the content that is being used when a user calls
     columns:
-      - name: uuid
+      - name: content_version_id
         description: Primary key for content_version
-        tests:
-          - unique
-          - not_null
       - name: data_source
-      - name: id
-        description: content_version_id
-      - name: duration
-      - name: status
-      - name: version
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - data_source
+            - content_version_id
   - name: stg_content
     description: The content that is actually being used over the phone when the user calls
     columns:
-      - name: uuid
-        description: Primary key for content
-        tests:
-          - unique
-          - not_null
       - name: data_source
-      - name: id
+      - name: content_id
         description: content_id
-      - name: name
-      - name: type
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - data_source
+            - content_id
   - name: stg_program_sequence
     description: The sequence in which the program being used.
     columns:
-      - name: uuid
-        description: Primary key for program_sequence
-        tests:
-          - unique
-          - not_null
+      - name: program_sequence_id
       - name: data_source
-      - name: id
-        description: program_sequence_id
       - name: content_id
       - name: day
       - name: sequence_index
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - data_source
+            - program_sequence_id
   - name: stg_program
     description: The programs that are used according to the user type(ex, T3, B6)
     columns:
-      - name: uuid
-        description: Primary Key for table program
-        tests:
-        - unique
-        - not_null
+      - name: program_id
       - name: data_source
-      - name: id
-        description: program_id
       - name: description
       - name: status
       - name: type
       - name: start_date
       - name: end_date
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - data_source
+            - program_id
   - name: stg_ivr_prompt_response
     description: Responses captured of the prompt questions from the users 
     columns:
@@ -95,6 +88,11 @@ models:
     freshness:
       warn_after: {count: 12, period: hour}
       error_after: {count: 24, period: hour}
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - data_source
+            - prompt_response_id
   - name: stg_registration
     description: Number of registrations done by each volunteers
     columns: 
@@ -119,6 +117,9 @@ models:
     columns: 
       - name: partner_id
         description: Primary key for this table
-        tests:
-          - unique
-          - not_null
+      - name: data_source
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - data_source
+            - partner_id

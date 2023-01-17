@@ -82,7 +82,7 @@ sources:
       - name: ivr_prompt_response
         description: Responses captured of the prompt questions from the users 
         columns:
-          - name: prompt_response_uuid
+          - name: uuid
             description: primary key for ivr promt response
             tests:
               - unique
