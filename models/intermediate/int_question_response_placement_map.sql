@@ -23,6 +23,8 @@ with
             left join question_placement using (question_id)
             left join indicators using (indicator_id)
             left join outcomes using (outcome_id)
+        where
+            question_placement_status <> 'NotDeployed' -- to avoid duplicate records
     )
 
 select *

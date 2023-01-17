@@ -11,6 +11,7 @@ with
             evaluation_phase,
             safe_cast(parent_question_id as integer) as parent_question_id
         from {{ source("prompt_configs", "src_questions") }}
+        where question_english is not null
     )
 
 select *

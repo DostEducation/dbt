@@ -4,7 +4,7 @@ with
         select
             * except (campaign_uuid, campaign_id),
             campaign_uuid as unified_call_record_uuid,
-            campaign_id as unified_call_record_id,
+            cast(campaign_id as string) as unified_call_id,
         from {{ ref("stg_campaign") }}
     ),
 
@@ -12,7 +12,7 @@ with
         select
             * except (call_log_uuid, call_log_id),
             call_log_uuid as unified_call_record_uuid,
-            call_log_id as unified_call_record_id,
+            cast(call_log_id as string) as unified_call_id,
 
         from {{ ref("stg_call_log") }}
     ),

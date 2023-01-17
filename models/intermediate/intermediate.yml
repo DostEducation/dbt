@@ -23,14 +23,13 @@ models:
         tests:
            - unique
            - not_null
-  - name: int_question_prompt_responses
+  - name: int_question_response_placement_map
     # description:
-    columns: 
-      - name: question_id
-        description: "The primary key for this table"
-        tests:
-           - unique
-           - not_null
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - question_placement_id
+            - keypress
   - name: int_user_dimensions
     # description:
     columns:
