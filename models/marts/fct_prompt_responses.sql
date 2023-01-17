@@ -2,6 +2,7 @@ with
 
     parsed_prompt_responses as (select * from {{ ref("int_parse_prompt_responses") }}),
     panel_users as (select * from {{ ref("int_panel_users") }}),
+    user_engagement_level as (select * from {{ ref("int_dedupe_user_engagement") }}),
 
     join_tables as (
         select
@@ -14,5 +15,3 @@ with
 
 select *
 from join_tables
-
--- resolve duplicates
