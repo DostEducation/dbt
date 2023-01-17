@@ -1,9 +1,11 @@
 with
-    program_wise_engagement as (
+    registration as (
         select
-            id,
-            uuid,
+            id as registration_id,
+            uuid as registration_uuid,
+            data_source,
             user_id,
+            user_phone,
             partner_id,
             status as user_status,
             created_on as user_created_on,
@@ -20,7 +22,9 @@ with
             occupation,
             gender_of_child
         from {{ source("unified_data_source", "registration") }}
+        where migrated_on <= TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 100 MINUTE)
     )
 
 select *
-from program_wise_engagement
+from registration
+

@@ -98,11 +98,17 @@ models:
   - name: stg_registration
     description: Number of registrations done by each volunteers
     columns: 
-      - name: uuid
+      - name: registration_uuid
         description: Primary key for table registration
         tests:
           - unique
           - not_null
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - data_source
+            - user_id
+            - user_phone
   - name: stg_program_wise_engagement
     description: Shows what level of user engagement is there program wise
     columns:
