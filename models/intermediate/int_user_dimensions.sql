@@ -5,7 +5,7 @@ with
     partner as (select * from {{ ref("stg_partner") }}),
 
     -- add deduplicated engagement level
-    join_tables as (select * from registration left join partner using (partner_id))
+    join_tables as (select * from registration left join partner using (partner_id, data_source))
 
 select *
 from join_tables

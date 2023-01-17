@@ -5,6 +5,7 @@ with
             id as prompt_response_id,
             uuid as prompt_response_uuid,
             data_source,
+            user_phone,
             keypress,
             if(
                 data_source = 'rp_ivr',

@@ -36,7 +36,7 @@ models:
   - name: int_user_dimensions
     # description:
     columns:
-      - name: uuid
+      - name: registration_uuid
         description: "The primary key for this table"
         tests:
            - unique
