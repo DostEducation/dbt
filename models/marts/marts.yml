@@ -1,0 +1,10 @@
+version: 2
+
+models:
+  - name: fct_prompt_responses
+    columns: 
+       - name: prompt_response_uuid
+         description: "The primary key for this table"
+         tests:
+           - unique
+           - not_null
