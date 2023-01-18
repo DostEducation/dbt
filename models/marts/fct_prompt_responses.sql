@@ -1,3 +1,11 @@
+{{
+    config(
+        materialized='incremental',
+        unique_key=['data_source', 'prompt_response_id'],
+        on_schema_change='fail'
+    )
+}}
+
 with
 
     parsed_prompt_responses as (select * from {{ ref("int_parse_prompt_responses") }}),
@@ -19,6 +27,11 @@ with
             left join panel_users using (user_id, data_source, baseline_question_id)
             left join user_engagement_level using (user_id, data_source, program_name)
             left join user_dimensions using (user_id, data_source, user_phone)
+        
+        {% if is_incremental() %}
+        -- this filter will only be applied on an incremental run
+        where ivr_prompt_response_updated_on > (select max(ivr_prompt_response_updated_on) from {{ this }})
+        {% endif %}
     )
 
 select *

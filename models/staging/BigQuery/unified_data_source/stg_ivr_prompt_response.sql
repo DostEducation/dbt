@@ -15,7 +15,10 @@ with
             datetime(
                 ivr_prompt_response.created_on, 'Asia/Kolkata'
             ) as ivr_prompt_response_created_on,
-            response as webhook_response_value
+            datetime(
+                ivr_prompt_response.updated_on, 'Asia/Kolkata'
+            ) as ivr_prompt_response_updated_on,
+            response as webhook_response_value,
         from {{ source("unified_data_source", "ivr_prompt_response") }}
         where migrated_on <= current_timestamp() - interval 100 minute
 
