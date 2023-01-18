@@ -1,8 +1,16 @@
 {{
     config(
-        materialized='incremental',
-        unique_key=['data_source', 'prompt_response_id'],
-        on_schema_change='fail'
+        materialized="incremental",
+        unique_key=["data_source", "prompt_response_id"],
+        on_schema_change="fail",
+
+        partition_by={
+        "field": "ivr_prompt_response_created_on",
+        "data_type": "timestamp",
+        "granularity": "day"
+        },
+
+        cluster_by="data_source"
     )
 }}
 
@@ -22,15 +30,16 @@ with
             user_engagement_level.first_user_month_engagement_level,
             user_engagement_level.overall_engagement_level,
             user_dimensions.* except (user_id, data_source, user_phone)
-        from
-            parsed_prompt_responses
-            left join panel_users using (user_id, data_source, baseline_question_id)
-            left join user_engagement_level using (user_id, data_source, program_name)
-            left join user_dimensions using (user_id, data_source, user_phone)
-        
+        from parsed_prompt_responses
+        left join panel_users using (user_id, data_source, baseline_question_id)
+        left join user_engagement_level using (user_id, data_source, program_name)
+        left join user_dimensions using (user_id, data_source, user_phone)
+
         {% if is_incremental() %}
         -- this filter will only be applied on an incremental run
-        where ivr_prompt_response_updated_on > (select max(ivr_prompt_response_updated_on) from {{ this }})
+        where
+            ivr_prompt_response_updated_on
+            > (select max(ivr_prompt_response_updated_on) from {{ this }})
         {% endif %}
     )
 
