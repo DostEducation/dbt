@@ -79,10 +79,24 @@ sources:
           - name: type
           - name: start_date
           - name: end_date
+      - name: module
+        description: add here
+        columns:
+          - name: uuid
+            description: Primary Key for table program
+            tests:
+            - unique
+            - not_null
+          - name: id
+          - name: name
+          - name: created_on
+          - name: udpated_on
+          - name: data_source
+          - name: migrated_on
       - name: ivr_prompt_response
         description: Responses captured of the prompt questions from the users 
         columns:
-          - name: prompt_response_uuid
+          - name: uuid
             description: primary key for ivr promt response
             tests:
               - unique

@@ -5,9 +5,11 @@ models:
     columns: 
        - name: baseline_question_id
          description: "The primary key for this table"
-         tests:
-           - unique
-           - not_null
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - baseline_question_id
+            - mapped_question_id
   - name: int_panel_users
     tests:
       - dbt_utils.unique_combination_of_columns:
