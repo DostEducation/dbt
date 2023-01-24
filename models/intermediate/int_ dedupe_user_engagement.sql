@@ -1,5 +1,5 @@
 with
-    program_wise_engagement as (select * from {{ ref("stg_program_wise_engagement") }}),
+    program_wise_engagement as (select * from  {{ ref("stg_program_wise_engagement") }}),
 
     engagement_level_values as (
         select *

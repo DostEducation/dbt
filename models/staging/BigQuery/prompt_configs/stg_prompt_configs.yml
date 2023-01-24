@@ -4,7 +4,7 @@ models:
   - name: stg_outcomes
     description: This table displays the different outcomes reached via the program 
     columns:
-      - name: id
+      - name: outcome_id
         description: Primary Key for outcomes and named as outcome_id
         tests:
           - unique
@@ -17,7 +17,7 @@ models:
   - name: stg_indicators
     description: Describes user attributes sub categorized into different topics
     columns:
-      - name: id
+      - name: indicator_id
         description: Primary Key for table `indicators` and named as indicator_id
         tests:
           - unique
@@ -37,7 +37,7 @@ models:
   - name: stg_questions
     description: This table tells us what questions will be asked as a prompt over the call in the program
     columns:
-      - name: id
+      - name: question_id
         description: Primary Key for table 'questions' and named as question_id
         tests:
           - unique
@@ -64,7 +64,7 @@ models:
   - name: stg_question_placement
     description: This table shows what questions are mapped to what table of the data model in the program
     columns: 
-      - name: id
+      - name: question_placement_id
         description: Primary Key for table 'question placements' and named as question_placement_id
         tests:
           - unique
@@ -86,7 +86,7 @@ models:
   - name: stg_configured_responses
     description: The tables shows the responses that are being mapped to their respective questions
     columns:
-      - name: id
+      - name: response_id
         description: Primary Key for table 'configured responses' and named as response_id
         tests:
           - unique

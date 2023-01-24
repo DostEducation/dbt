@@ -4,7 +4,7 @@ models:
   - name: stg_all_call_records
     description: All call records of a user who is been signed up for the program
     columns:
-      - name: uuid
+      - name: all_call_record_uuid
         description: Primary key for all_call_records and name is changed to all_call_record_uuid
         tests:
           - unique
@@ -27,7 +27,7 @@ models:
   - name: stg_content_version
     description: Version of the content that is being used when a user calls
     columns:
-      - name: uuid
+      - name: content_version_id
         description: Primary key for content_version
         tests:
           - unique
@@ -41,7 +41,7 @@ models:
   - name: stg_content
     description: The content that is actually being used over the phone when the user calls
     columns:
-      - name: uuid
+      - name: content_id
         description: Primary key for content
         tests:
           - unique
@@ -54,7 +54,7 @@ models:
   - name: stg_program_sequence
     description: The sequence in which the program being used.
     columns:
-      - name: uuid
+      - name: program_sequence_id
         description: Primary key for program_sequence
         tests:
           - unique
@@ -68,7 +68,7 @@ models:
   - name: stg_program
     description: The programs that are used according to the user type(ex, T3, B6)
     columns:
-      - name: uuid
+      - name: program_id
         description: Primary Key for table program
         tests:
         - unique
@@ -84,7 +84,7 @@ models:
   - name: stg_ivr_prompt_response
     description: Responses captured of the prompt questions from the users 
     columns:
-      - name: uuid
+      - name: prompt_response_id
         description: primary key for ivr promt response and named as prompt_response_uuid
         tests:
           - unique
