@@ -20,6 +20,19 @@ models:
     # freshness:
     #   warn_after: {count: 12, period: hour}
     #   error_after: {count: 24, period: hour}
+  - name: stg_language
+    description: Will tell you what all languages the program is available in
+    columns:
+      - name: uuid
+        description: Primary key for language
+        tests:
+          - unique
+          - not_null
+      - name: language_id
+      - name: language_name
+      - name: created_on
+      - name: data_source
+      - name: migrated_on
   - name: stg_content_version
     description: Version of the content that is being used when a user calls
     columns:
@@ -34,14 +47,11 @@ models:
   - name: stg_content
     description: The content that is actually being used over the phone when the user calls
     columns:
-<<<<<<< HEAD
       - name: content_id
         description: Primary key for content
         tests:
           - unique
           - not_null
-=======
->>>>>>> 957bca3f086089db1368b81cd204fdea8a01aabe
       - name: data_source
       - name: content_id
         description: content_id
@@ -54,13 +64,10 @@ models:
     description: The sequence in which the program being used.
     columns:
       - name: program_sequence_id
-<<<<<<< HEAD
         description: Primary key for program_sequence
         tests:
           - unique
           - not_null
-=======
->>>>>>> 957bca3f086089db1368b81cd204fdea8a01aabe
       - name: data_source
       - name: content_id
       - name: day
@@ -74,13 +81,10 @@ models:
     description: The programs that are used according to the user type(ex, T3, B6)
     columns:
       - name: program_id
-<<<<<<< HEAD
         description: Primary Key for table program
         tests:
         - unique
         - not_null
-=======
->>>>>>> 957bca3f086089db1368b81cd204fdea8a01aabe
       - name: data_source
       - name: description
       - name: status
@@ -106,11 +110,8 @@ models:
   - name: stg_ivr_prompt_response
     description: Responses captured of the prompt questions from the users 
     columns:
-<<<<<<< HEAD
       - name: prompt_response_id
-=======
       - name: prompt_response_uuid
->>>>>>> 957bca3f086089db1368b81cd204fdea8a01aabe
         description: primary key for ivr promt response and named as prompt_response_uuid
         tests:
           - unique

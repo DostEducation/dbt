@@ -8,6 +8,19 @@ sources:
     tables:
       - name: campaign
       - name: call_log
+      - name: language
+        description: Will tell you what all languages the program is available in
+        columns:
+          - name: uuid
+            description: Primary key for language
+            tests:
+              - unique
+              - not_null
+          - name: id
+          - name: name
+          - name: created_on
+          - name: data_source
+          - name: migrated_on
       - name: all_call_records
         description: All call records of a user who is been signed up for the program
         columns:
