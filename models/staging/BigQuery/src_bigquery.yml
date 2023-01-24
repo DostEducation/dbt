@@ -244,3 +244,10 @@ sources:
             description: The response that is desired from the user
           - name: webhook_resp_val
 
+  - name: ivr_question_configs
+    description: Ivr questions configuration Dost Education Big Query
+    database: cryptic-gate-211900
+    schema: ivr_question_configs
+    tables:
+      - name: ivr-prompt-responses-parsed
+        description: Prompt responses given by the user
