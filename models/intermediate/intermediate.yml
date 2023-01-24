@@ -5,37 +5,49 @@ models:
     columns: 
        - name: baseline_question_id
          description: "The primary key for this table"
-         tests:
-           - unique
-           - not_null
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - baseline_question_id
+            - mapped_question_id
   - name: int_panel_users
-    columns:
-      - name: user_id
-        description: "The primary key for this table"
-        tests:
-           - unique
-           - not_null
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - data_source
+            - user_id
+            - baseline_question_id
   - name: int_parse_prompt_responses
     # description:
     columns:
-      - name: prompt_response_id
+      - name: prompt_response_uuid
         description: "The primary key for this table"
         tests:
            - unique
            - not_null
-  - name: int_question_prompt_responses
+  - name: int_question_response_placement_map
     # description:
-    columns: 
-      - name: question_id
-        description: "The primary key for this table"
-        tests:
-           - unique
-           - not_null
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - unified_content_map_id
+            - data_source
+            - keypress
+            - question_placement_activation_date
+            - question_deactivation_date
   - name: int_user_dimensions
     # description:
     columns:
-      - name: uuid
+      - name: registration_uuid
         description: "The primary key for this table"
         tests:
            - unique
            - not_null
+  - name: int_dedupe_user_engagement
+    # description:
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - data_source
+            - user_id
+            - program_name
