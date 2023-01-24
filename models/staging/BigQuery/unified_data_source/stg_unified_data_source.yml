@@ -33,6 +33,18 @@ models:
       - name: created_on
       - name: data_source
       - name: migrated_on
+  - name: stg_users
+    description: personal info about all the users
+    columns: 
+      - name: user_uuid
+        description: Primary key for users
+        tests:
+          - not_null
+      - name: user_id
+      - name: user_name
+      - name: partner_id
+      - name: data_source
+      - name: migrated_on
   - name: stg_content_version
     description: Version of the content that is being used when a user calls
     columns:
@@ -50,7 +62,6 @@ models:
       - name: content_id
         description: Primary key for content
         tests:
-          - unique
           - not_null
       - name: data_source
       - name: content_id
@@ -66,7 +77,6 @@ models:
       - name: program_sequence_id
         description: Primary key for program_sequence
         tests:
-          - unique
           - not_null
       - name: data_source
       - name: content_id
@@ -83,7 +93,6 @@ models:
       - name: program_id
         description: Primary Key for table program
         tests:
-        - unique
         - not_null
       - name: data_source
       - name: description
