@@ -60,6 +60,7 @@ sources:
           - name: call_start_time
           - name: call_end_time
           - name: duration
+          - name: contnet_id
         # loaded_at_field: migrated_on
         # freshness:
         #   warn_after: {count: 12, period: hour}

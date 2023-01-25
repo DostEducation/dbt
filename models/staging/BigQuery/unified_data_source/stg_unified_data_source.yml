@@ -16,6 +16,7 @@ models:
       - name: call_end_time
       - name: duration
       - name: user_id
+      - name: content_id
     # loaded_at_field: migrated_on
     # freshness:
     #   warn_after: {count: 12, period: hour}
