@@ -4,7 +4,8 @@ with
             id as content_id,
             data_source,
             topic_id,
-            name as content_name
+            name as content_name,
+            created_on
         from {{ source("unified_data_source", "content") }}
         where migrated_on <= current_timestamp() - interval 100 minute
     )

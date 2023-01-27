@@ -35,4 +35,6 @@ left join full_duration f on t.content_id = f.content_id
       and t.data_source = f.data_source
       and t.created_on = f.created_on
 left join {{ ref("stg_content") }} c on c.content_id = t.content_id
+      and c.data_source = t.data_source
+      and c.created_on = t.created_on
 group by 1,2,3,4,5
