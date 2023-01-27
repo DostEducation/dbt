@@ -38,14 +38,17 @@ models:
     description: personal info about all the users
     columns: 
       - name: user_uuid
-        description: Primary key for users
-        tests:
-          - not_null
+        description: add here
+      - name: data_source
       - name: user_id
       - name: user_name
       - name: partner_id
-      - name: data_source
       - name: migrated_on
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - data_source
+            - user_id
   - name: stg_content_version
     description: Version of the content that is being used when a user calls
     columns:
