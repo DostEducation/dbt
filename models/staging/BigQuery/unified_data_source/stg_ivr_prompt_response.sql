@@ -7,6 +7,7 @@ with
             data_source,
             user_phone,
             keypress,
+            prompt_name,
             if(
                 data_source = 'rp_ivr',
                 cast(call_log_id as string),

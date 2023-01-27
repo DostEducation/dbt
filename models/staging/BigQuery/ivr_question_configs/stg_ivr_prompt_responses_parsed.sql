@@ -6,3 +6,4 @@ with prompt_responses as (
 select
     *
 from prompt_responses
+where keypress is null

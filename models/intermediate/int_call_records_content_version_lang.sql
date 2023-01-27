@@ -1,22 +1,24 @@
-with call_records_content_ver_lang as (
+with call_records as (select * from {{ ref("stg_all_call_records") }}),
+    content_version as (select * from {{ ref("stg_content_version") }}),
+    language_used  as (select * from {{ ref("stg_language") }}),
+    users as (select * from {{ ref("stg_users") }}),
+    partner as (select * from {{ ref("stg_partner") }}),
 
-    SELECT 
-        acr.*,
-        c.content_duration as content_version_duration,
-        l.language_name,
-        l.language_id 
-    FROM  {{ ref("stg_all_call_records") }} acr 
-    left join {{ ref("stg_content_version") }} c on c.content_version_id = acr.content_version_id
-    left join {{ ref("stg_language") }} l on c.language_id = l.language_id
-),
- call_records_users_partners as (
-    SELECT
-        crc.*,
-        p.partner_name
-    FROM call_records_content_ver_lang crc
-    left join {{ ref("stg_users") }} u on u.user_id = crc.user_id
-    left join {{ ref("stg_partner") }} p on p.partner_id = u.partner_id
- )
+    joining_all_tables as (
+    
+        SELECT 
+            call_records.*,
+            content_version.content_duration as content_version_duration,
+            language_used.language_name,
+            language_used.language_id,
+            partner.partner_name
+        FROM  call_records 
+        left join content_version using (content_version_id, data_source)
+        left join language_used using(language_id, data_source)
+        left join users using (user_id, data_source)
+        left join partner using(partner_id, data_source)
+    )
+
 select 
     *
-from call_records_users_partners
+from joining_all_tables
