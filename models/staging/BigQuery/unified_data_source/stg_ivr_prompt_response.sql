@@ -6,8 +6,10 @@ with
             uuid as prompt_response_uuid,
             data_source,
             user_phone,
+            response,
             keypress,
             prompt_name,
+            created_on,
             if(
                 data_source = 'rp_ivr',
                 cast(call_log_id as string),

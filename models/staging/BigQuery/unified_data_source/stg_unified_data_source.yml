@@ -68,6 +68,7 @@ models:
         tests:
           - not_null
       - name: data_source
+      - name: created_on
       - name: content_id
         description: content_id
     tests:
@@ -135,6 +136,8 @@ models:
       - name: call_sid
       - name: call_log_id
       - name: keypress
+      - name: response
+      - name: created_on
     loaded_at_field: created_on
     freshness:
       warn_after: {count: 12, period: hour}

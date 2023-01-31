@@ -90,6 +90,7 @@ sources:
           - name: id
           - name: name
           - name: type
+          - name: created_on
       - name: program_sequence
         description: The sequence in which the program being used.
         columns:
@@ -145,6 +146,7 @@ sources:
           - name: call_sid
           - name: call_log_id
           - name: keypress
+          - name: response
         loaded_at_field: created_on
         freshness:
           warn_after: {count: 12, period: hour}
