@@ -6,7 +6,7 @@ ivr_prompt_not_responded as (
         data_source,
         date_trunc(created_on, day) created_on, 
         count(user_phone) as count_not_responded
-    from {{ ref("stg_ivr_prompt_response") }}
+    from {{ ref("int_parse_prompt_responses") }}
     where keypress is null
         -- and cast(created_on as DATETIME) >= CURRENT_DATE() - INTERVAL 7 DAY
     group by 1,2,3,4
@@ -18,7 +18,7 @@ all_prompt_responses as (
         data_source,
         date_trunc(created_on, day) created_on,
         count(user_phone) as count_all_responded
-        from {{ ref("stg_ivr_prompt_response") }}
+        from {{ ref("int_parse_prompt_responses") }}
         group by 1,2,3,4
 )
 select

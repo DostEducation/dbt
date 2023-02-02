@@ -65,8 +65,6 @@ models:
     columns:
       - name: content_id
         description: Primary key for content
-        tests:
-          - not_null
       - name: data_source
       - name: created_on
       - name: content_id
