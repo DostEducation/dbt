@@ -2,9 +2,9 @@ with
 
     campaign as (
         select
-            * except (campaign_uuid, campaign_id),
+            * except (campaign_uuid, campaign_id, callsid),
             campaign_uuid as unified_call_record_uuid,
-            cast(campaign_id as string) as unified_call_id,
+            cast(callsid as string) as unified_call_id,
         from {{ ref("stg_campaign") }}
     ),
 
@@ -25,3 +25,4 @@ with
 
 select *
 from union_call_record_tables
+

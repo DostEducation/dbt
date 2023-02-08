@@ -50,6 +50,12 @@ models:
         tests:
            - unique
            - not_null
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - data_source
+            - user_id
+            - user_phone
   - name: int_dedupe_user_engagement
     # description:
     tests:
