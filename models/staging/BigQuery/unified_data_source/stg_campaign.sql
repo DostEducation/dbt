@@ -4,6 +4,7 @@ with
             uuid as campaign_uuid,
             data_source,
             id as campaign_id,
+            callsid,
             programseq_id as program_sequence_id,
             content_version_id,
             user_id,
