@@ -49,4 +49,3 @@ with
 
 select *
 from parse_prompt_responses
--- where data_source = 'rp_ivr'
