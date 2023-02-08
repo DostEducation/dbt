@@ -11,7 +11,8 @@ with
     joining_all_tables as (
 
         select
-            call_records.* except(program_id),
+            call_records.* except(program_id, created_on),
+            date_trunc(call_records.created_on, day) created_on,
             content_version.content_duration as content_version_duration,
             language_used.language_name,
             -- language_used.language_id,
@@ -28,6 +29,7 @@ with
         left join module_stg on program_sequence.module_id = module_stg.module_id
                                 and program_sequence.data_source = module_stg.data_source
         where module_stg.module_id <= 19
+            and cast(call_records.created_on as DATETIME) >= CURRENT_DATE() - INTERVAL 7 DAY
     )
 
 select *
