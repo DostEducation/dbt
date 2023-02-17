@@ -1,6 +1,18 @@
 version: 2
 
 models:
+  - name: stg_engagement_campaign_mapping
+    description: maps the inbound and outbound call
+    columns: 
+      - name: uuid
+      - name: user_number
+      - name: attempted_timestamp
+      - name: engagement_start_time
+      - name: user_id
+      - name: content_id
+      - name: content_version_id
+      - name: program_id
+      - name: migrated_on
   - name: stg_all_call_records
     description: All call records of a user who is been signed up for the program
     columns:
