@@ -25,19 +25,15 @@ time_difference_inbound_outbound as (
 binning_into_groups as (
   select
     *,
-    case when delay_in_minutes <= 1 then "1. Immediate"
-         when delay_in_minutes between 2 and 30 then "2. Delay"
-         when delay_in_minutes > 30 then "3. Huge delay"
+    case when delay_in_minutes <= 1 then "1. Immediate ( < 1 mins)"
+         when delay_in_minutes between 1 and 31 then "2. Delay (between 1 to 31 mins)"
+         when delay_in_minutes >= 31 then "3. Huge delay ( >=31 mins)"
          when delay_in_minutes is null then "4. Call never attempted"
     else null
-    end as call_back_time
+    end as call_back_delay_bucket
   from time_difference_inbound_outbound
 )
 
 select
-  call_back_time,
-  count(call_back_time) as number_of_call_back_time
+  *
 from binning_into_groups
-where call_back_time is not null
-group by 1
-order by call_back_time asc
