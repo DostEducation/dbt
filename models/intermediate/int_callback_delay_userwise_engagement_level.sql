@@ -17,6 +17,7 @@ with userwise_engagement as (select * from {{ ref('int_userwise_engagement_level
         left join userwise_engagement using (user_id)
         where data_source = "admindashboard"
         -- and program_name in ("B3", "T6")
+        and delay_in_minutes < 1000
 )
 select
     *

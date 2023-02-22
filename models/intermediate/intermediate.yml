@@ -15,8 +15,12 @@ models:
       - name: all_call_record_uuid
         description: "Primary key for this table"
         tests:
-          - not_null
-          - unique 
+          - not_null 
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+          - user_id
+          - all_call_record_uuid
   - name: int_panel_users
     tests:
       - dbt_utils.unique_combination_of_columns:

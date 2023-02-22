@@ -12,13 +12,14 @@ with
 
         select
             call_records.* except(program_id, created_on),
-            date_trunc(call_records.created_on, day) created_on,
             content_version.content_duration as content_version_duration,
+            date_trunc(call_records.created_on, day) created_on,
             language_used.language_name,
             -- language_used.language_id,
             partner.partner_name,
             program.program_name,
-            module_stg.module_id
+            module_stg.module_id,
+            module_stg.module_name
         from call_records
         left join content_version using (content_version_id, data_source)
         left join language_used using (language_id, data_source)
@@ -28,7 +29,8 @@ with
         left join program_sequence using (program_sequence_id, data_source)
         left join module_stg on program_sequence.module_id = module_stg.module_id
                                 and program_sequence.data_source = module_stg.data_source
-        where module_stg.module_id <= 19
+        where module_stg.module_id = 1
+            and  content_name = "t-6_1-hello_1-day1"      
             and cast(call_records.created_on as DATETIME) >= CURRENT_DATE() - INTERVAL 7 DAY
     )
 
