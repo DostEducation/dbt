@@ -18,7 +18,7 @@ with
             program_sequence.module_id,
             program.* except (program_id, data_source),
             content_version.content_id,
-            content.* except (content_id, data_source),
+            content.* except (content_id, data_source, created_on),
             q_r_p_map.* except (keypress, data_source, program_sequence_id, content_id, webhook_response_value)
         from ivr_prompt_response
         left join unified_call_records using (unified_call_id, data_source)
