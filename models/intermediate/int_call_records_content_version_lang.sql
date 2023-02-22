@@ -32,5 +32,6 @@ with
             and cast(call_records.created_on as DATETIME) >= CURRENT_DATE() - INTERVAL 7 DAY
     )
 
-select *
+select 
+    *
 from joining_all_tables
