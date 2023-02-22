@@ -6,8 +6,123 @@ sources:
     database: cryptic-gate-211900
     schema: unified_data_source
     tables:
+      - name: unified_data_source_for_enrolled_users
+        description: gives the data of users selecting a time to call or all info of the call that went out 
+        columns:
+          - name: log_created_on
+          - name: call_type
+          - name: call_category
+          - name: flow_category
+          - name: call_sid
+          - name: content_id
+          - name: content_name
+          - name: active_user_program_count
+          - name: user_phone
+          - name: system_phone_number
+          - name: attempt_number
+          - name: call_status
+          - name: missed_call_status
+          - name: telco_status
+          - name: user_id
+          - name: user_created_on
+          - name: time_slot_for_the_call
+          - name: current_time_slot
+          - name: program_for_the_call
+          - name: program_status_for_the_call
+          - name: user_program_id
+          - name: user_program_status
+          - name: content_status
+          - name: dial_time
+          - name: scheduled_time
+          - name: call_start_time
+          - name: call_end_time
+          - name: nearest_callback_dial_time
+          - name: nearest_callback_time_diff_in_sec
+          - name: nearest_picked_callback_time
+          - name: attempt_type
+          - name: time_diff_between_attempt
+          - name: regular_attempt_number
+          - name: first_callback_dial_time
+          - name: first_callback_status
+          - name: second_callback_dial_time
+          - name: second_callback_status
+          - name: third_callback_dial_time
+          - name: third_callback_status
+          - name: latest_call_attempted_to_user_at
+          - name: data_source
+          - name: present_user_program_status
+          - name: user_program_created_on
+          - name: price
+          - name: duration
+          - name: call_lag
+          - name: eligible_to_receive_calls
+          - name: program_sequence_id
+          - name: partner_id
+          - name: program_id
+          - name: district
+          - name: state
+          - name: parent_type
+          - name: is_child_between_0_3
+          - name: is_child_between_3_6
+          - name: is_child_above_6
+          - name: has_no_child
+          - name: has_smartphone
+          - name: education_level
+          - name: occupation
+          - name: gender_of_child
+
+      - name: engagement_campaign_mapping
+        description: Maps the inbound and outbound calls
+        columns: 
+          - name: uuid
+          - name: user_number
+          - name: attempted_timestamp
+          - name: engagement_start_time
+          - name: user_id
+          - name: content_id
+          - name: content_version_id
+          - name: program_id
+          - name: migrated_on
       - name: campaign
       - name: call_log
+      - name: language
+        description: Will tell you what all languages the program is available in
+        columns:
+          - name: uuid
+            description: Primary key for language
+            tests:
+              - unique
+              - not_null
+          - name: id
+          - name: name
+          - name: created_on
+          - name: data_source
+          - name: migrated_on
+      - name: users
+        desccription: It keeps information about users
+        columns:
+          - name: id
+            description: Primary key for users
+          - name: name
+          - name: partner_id
+          - name: data_source
+          - name: created_on
+          - name: migrated_on
+          - name: signup status
+      - name: partner
+        description: Information about partners of this program
+        columns:
+          - name: uuid
+            description: Primary key for partner
+            tests:
+              - unique
+              - not_null
+          - name: id
+          - name: name
+          - name: channel_name
+          - name: created_on
+          - name: data_source
+          - name: migrated_on
       - name: all_call_records
         description: All call records of a user who is been signed up for the program
         columns:
@@ -22,6 +137,7 @@ sources:
           - name: call_start_time
           - name: call_end_time
           - name: duration
+          - name: contnet_id
         # loaded_at_field: migrated_on
         # freshness:
         #   warn_after: {count: 12, period: hour}
@@ -51,6 +167,7 @@ sources:
           - name: id
           - name: name
           - name: type
+          - name: created_on
       - name: program_sequence
         description: The sequence in which the program being used.
         columns:
@@ -80,7 +197,7 @@ sources:
           - name: start_date
           - name: end_date
       - name: module
-        description: add here
+        description: information about module that is used
         columns:
           - name: uuid
             description: Primary Key for table program
@@ -106,13 +223,13 @@ sources:
           - name: call_sid
           - name: call_log_id
           - name: keypress
+          - name: response
         loaded_at_field: created_on
         freshness:
           warn_after: {count: 12, period: hour}
           error_after: {count: 24, period: hour}
       - name: registration
       - name: program_wise_engagement
-      - name: partner
   - name: prompt_configs
     description: prompt configs ingested from Google Sheets into Big Query via Airbyte
     database: cryptic-gate-211900
@@ -207,3 +324,12 @@ sources:
             description: The response that is desired from the user
           - name: webhook_resp_val
 
+  - name: ivr_question_configs
+    description: Ivr questions configuration Dost Education Big Query
+    database: cryptic-gate-211900
+    schema: ivr_question_configs
+    tables:
+      - name: ivr-prompt-responses-parsed
+        description: Prompt responses given by the user
+
+  

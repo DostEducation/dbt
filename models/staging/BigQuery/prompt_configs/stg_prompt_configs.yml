@@ -6,9 +6,6 @@ models:
     columns:
       - name: outcome_id
         description: Primary Key for outcomes and named as outcome_id
-        tests:
-          - unique
-          - not_null
       - name: spectrum
         description: Time duration on when to implement the outcome_name
       - name: outcome_name

@@ -1,0 +1,8 @@
+version: 2
+
+models:
+  - name: stg_ivr_prompt_responses_parsed
+    description: This table displays the prompt responses given by the users 
+    columns:
+      - name: uuid
+        description: Primary Key for this table
