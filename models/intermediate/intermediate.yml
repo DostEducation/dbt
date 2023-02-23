@@ -1,6 +1,13 @@
 version: 2
 
 models:
+  - name: int_schedule_dial
+    columns:
+      - name: user_id
+        description: "Unique id of the user"
+        tests:
+          - not_null
+          - unique 
   - name: int_baseline_question_map
     columns: 
        - name: baseline_question_id
