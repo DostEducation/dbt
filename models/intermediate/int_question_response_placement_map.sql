@@ -26,7 +26,10 @@ with
             left join outcomes using (outcome_id)
         where
             question_placement_status <> 'NotDeployed' -- to avoid duplicate records
-            and question_placement_id < 324 -- to filter out instances where more than 1 prompt are placed
+            and (
+                question_placement_id <= 324
+                or question_placement_id >= 345
+            ) -- to filter out instances where more than 1 prompt are placed
     )
 
 select *
