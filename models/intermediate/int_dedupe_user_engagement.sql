@@ -18,6 +18,8 @@ with
             data_source,
             user_id,
             program_name,
+            total_unique_content_answered,
+            total_unique_content_delivered,
             first_user_week_engagement_level,
             fu_week_el.level_value as first_user_week_engagement_level_value,
             first_user_month_engagement_level,
@@ -28,6 +30,8 @@ with
             program_end_date,
             user_age,
             delivered_calls_count,
+            total_corrected_listen_seconds,
+            total_content_duration
         from program_wise_engagement
         left join
             engagement_level_values fu_week_el
@@ -47,6 +51,10 @@ with
             data_source,
             user_id,
             program_name,
+            max(total_unique_content_delivered) as total_content_delivered,
+            max(total_unique_content_answered) as total_content_answered,
+            max(total_corrected_listen_seconds) as total_listen_seconds,
+            max(total_content_duration) as total_content_duration,
             max(
                 first_user_week_engagement_level_value
             ) as first_user_week_engagement_level_value,

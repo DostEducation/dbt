@@ -15,5 +15,7 @@ with
         where row_number = 1
     )
 
-select *
+select 
+    *
 from get_program_with_max_calls_delivered
+where data_source = "admindashboard"

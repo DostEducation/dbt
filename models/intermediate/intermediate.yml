@@ -1,6 +1,34 @@
 version: 2
 
 models:
+  - name: int_immediate_callback_milestone_signup
+    columns:
+      - name: user_id
+        description: "Primary key for this table"
+        tests:
+          - not_null 
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+          - user_id
+  - name: int_user_activation
+    columns:
+      - name: user_id
+        description: "Primary key for this table"
+        tests:
+          - not_null 
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+          - user_id
+          - data_source
+  - name: int_schedule_dial
+    columns:
+      - name: user_id
+        description: "Unique id of the user"
+        tests:
+          - not_null
+          - unique 
   - name: int_baseline_question_map
     columns: 
        - name: baseline_question_id
@@ -10,13 +38,17 @@ models:
           combination_of_columns:
             - baseline_question_id
             - mapped_question_id
-  - name: int_call_records_content_version_lang
+  - name: int_user_listens_intro_message
     columns:
-      - name: all_call_record_uuid
+      - name: user_id
         description: "Primary key for this table"
         tests:
-          - not_null
-          - unique 
+          - not_null 
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+          - user_id
+          - data_source
   - name: int_panel_users
     tests:
       - dbt_utils.unique_combination_of_columns:
