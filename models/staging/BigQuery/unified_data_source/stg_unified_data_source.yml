@@ -1,6 +1,14 @@
 version: 2
 
 models:
+  - name: stg_monthwise_engagement_level
+    description: Gives you monthwise user engagement level
+    columns:
+      - name: user_id
+  - name: stg_daily_engagement_user_agewise
+    description: "Gives data of daily engagement of a user"
+    columns:
+      - name: user_id
   - name: stg_unified_enrolled_user
     description: "Gives all the info about the calls of users "
     columns:

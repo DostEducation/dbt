@@ -6,6 +6,16 @@ sources:
     database: cryptic-gate-211900
     schema: unified_data_source
     tables:
+      - name: monthly_engagement_user_age_wise
+        description: tells you monthwise user engagement 
+        columns:
+          - name: user_id
+            description: Unique ID of a user
+      - name: daily_engagement_user_age_wise
+        description: Tells you the engagement of a user according to his program agewise
+        columns:
+          - name: user_id
+            description: Unique ID of the table
       - name: unified_data_source_for_enrolled_users
         description: gives the data of users selecting a time to call or all info of the call that went out 
         columns:

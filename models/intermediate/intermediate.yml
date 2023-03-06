@@ -1,6 +1,17 @@
 version: 2
 
 models:
+  - name: int_useragewise_user_activation
+    columns:
+      - name: user_id
+        description: "Primary key for this table"
+        tests:
+          - not_null 
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+          - user_id
+          - data_source
   - name: int_immediate_callback_milestone_signup
     columns:
       - name: user_id
