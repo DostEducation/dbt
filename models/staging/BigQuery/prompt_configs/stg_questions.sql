@@ -9,10 +9,12 @@ with
             safe_cast(deactivation_date as date) as question_deactivation_date,
             safe_cast(related_module_id as integer) as related_module_id,
             evaluation_phase,
-            safe_cast(parent_question_id as integer) as parent_question_id
+            safe_cast(parent_question_id as integer) as parent_question_id,
         from {{ source("prompt_configs", "src_questions") }}
-        where question_english is not null
+        -- where question_english is not null
     )
 
-select *
+select
+    *,
+    if(evaluation_phase = 'Baseline', question_id, parent_question_id) as baseline_question_id
 from questions

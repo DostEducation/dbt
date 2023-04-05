@@ -9,7 +9,9 @@ with
             content_version_id,
             user_id,
         from {{ source("unified_data_source", "campaign") }}
-        where migrated_on <= current_timestamp() - interval 100 minute
+        where
+            migrated_on <= current_timestamp() - interval 100 minute
+            and callsid <> ''
     )
 
 select *
