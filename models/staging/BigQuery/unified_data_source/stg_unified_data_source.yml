@@ -105,6 +105,20 @@ models:
     # freshness:
     #   warn_after: {count: 12, period: hour}
     #   error_after: {count: 24, period: hour}
+  - name: stg_campaign
+    description: add here
+    columns:
+      - name: callsid
+        tests:
+          - unique
+          - not_null
+  - name: stg_call_log
+    description: add here
+    columns:
+      - name: call_log_id
+        tests:
+          - unique
+          - not_null
   - name: stg_language
     description: Will tell you what all languages the program is available in
     columns:

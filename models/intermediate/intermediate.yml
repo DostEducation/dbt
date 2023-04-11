@@ -40,6 +40,14 @@ models:
         tests:
           - not_null
           - unique 
+
+  - name: int_unified_call_records
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - data_source
+            - unified_call_id
+
   - name: int_baseline_question_map
     columns: 
        - name: baseline_question_id
@@ -84,7 +92,6 @@ models:
             - data_source
             - keypress
             - question_placement_activation_date
-            - question_deactivation_date
   - name: int_user_dimensions
     # description:
     columns:

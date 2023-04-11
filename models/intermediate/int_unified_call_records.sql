@@ -13,7 +13,6 @@ with
             * except (call_log_uuid, call_log_id),
             call_log_uuid as unified_call_record_uuid,
             cast(call_log_id as string) as unified_call_id,
-
         from {{ ref("stg_call_log") }}
     ),
 
