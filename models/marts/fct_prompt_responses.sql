@@ -41,7 +41,17 @@ with
             ivr_prompt_response_updated_on
             > (select max(ivr_prompt_response_updated_on) from {{ this }})
         {% endif %}
+    ),
+    calculating_user_week_at_time_of_call as(
+        select  
+            *,
+            CASE 
+            WHEN CAST(FLOOR(DATE_DIFF(DATE(created_on), DATE(TIMESTAMP_ADD(user_created_on, INTERVAL 330 MINUTE)), DAY)/7) AS INTEGER) + 1 > 0
+            THEN CAST(FLOOR(DATE_DIFF(DATE(created_on), DATE(TIMESTAMP_ADD(user_created_on, INTERVAL 330 MINUTE)), DAY)/7) AS INTEGER) + 1 
+            ELSE 0
+            END AS user_week_at_time_of_call
+        from join_tables
     )
 
 select *
-from join_tables
+from calculating_user_week_at_time_of_call
