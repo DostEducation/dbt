@@ -1,0 +1,24 @@
+version: 2
+
+models:
+  - name: int_sector_engagement
+    columns:
+      - name: sector_id
+        tests:
+          - not_null
+    
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+          - sector_id
+          - year_and_month
+  - name: int_centre_onboarding_level
+    columns:
+      - name: centre_id
+        tests:
+          - not_null
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+          - centre_id
+          - year_and_month      
