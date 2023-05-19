@@ -342,4 +342,10 @@ sources:
       - name: ivr-prompt-responses-parsed
         description: Prompt responses given by the user
 
-  
+  - name: unified_content_analytics
+    description: Content analysis
+    database: cryptic-gate-211900
+    schema: unified_content_analytics
+    tables:
+      - name: module_topic
+        description:  info about module

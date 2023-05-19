@@ -1,6 +1,6 @@
 with
     sector_engagement as (select * from {{ ref("stg_activities") }}),
-    sector_geographies as (select * from {{ ref("stg_geographies") }}),
+    sector_geographies as (select * from {{ ref("stg_sectors") }}),
     stakeholder as (select * from {{ ref("stg_stakeholders") }}),
     joining_offline_online_meeting as (
         select

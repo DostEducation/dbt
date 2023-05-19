@@ -1,14 +1,14 @@
 version: 2
 
 models:
-  - name: stg_geographies
+  - name: stg_sectors
     description: Sector level Geographies
     columns:
       - name: sector_id
         tests:
           - not_null
           - unique
-  - name: stg_block_geographies
+  - name: stg_blocks
     description: block information
     columns: 
       - name: block_id
@@ -22,7 +22,7 @@ models:
         tests:
           - not_null
           - unique
-  - name: stg_dost_member
+  - name: stg_dost_team
     description: team member info 
     columns: 
       - name: dost_team_id

@@ -20,7 +20,8 @@ with
             has_smartphone,
             education_level,
             occupation,
-            gender_of_child
+            gender_of_child,
+            signup_date
         from {{ source("unified_data_source", "registration") }}
         where migrated_on <= TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 100 MINUTE)
     )

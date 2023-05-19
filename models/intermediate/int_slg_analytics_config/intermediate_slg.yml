@@ -1,6 +1,53 @@
 version: 2
 
 models:
+  - name: int_improvised_blockwise_info
+    columns: 
+      - name: block_id
+        tests:
+          - not_null
+          - unique
+    columns: 
+      - name: block_id
+        tests:
+          - not_null
+          - unique
+  - name: int_block_blm_visits_registrations
+    columns: 
+      - name: block_id
+        tests:
+          - not_null
+          - unique
+  - name: int_sector_slm_visits_registrations
+    columns: 
+      - name: sector_id
+        tests:
+          - not_null
+          - unique
+  - name: int_finding_duplicate_dost_team
+    columns: 
+      - name: dost_team_id
+        tests:
+          - not_null
+          - unique
+  - name: int_finding_duplicate_blocks
+    columns: 
+      - name: block_id
+        tests:
+          - not_null
+          - unique
+  - name: int_finding_duplicate_sectors
+    columns: 
+      - name: sector_id
+        tests:
+          - not_null
+          - unique
+  - name: int_finding_duplicate_centres
+    columns: 
+      - name: centre_id
+        tests:
+          - not_null
+          - unique
   - name: int_sector_engagement
     columns:
       - name: sector_id

@@ -11,6 +11,10 @@ with
             program_id,
             content_id,
             content_name,
+            call_type,
+            missed_call_status,
+            telco_code,
+            call_status,
             created_on,
             ist_created_on,
             migrated_on

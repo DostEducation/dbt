@@ -8,9 +8,10 @@ with stakeholder_table as (select * from {{ source('slg_analytics_config', 'src_
             state_id,
             district_id,
             block_id,
-            sector_code as sector_id,
+            sector_id,
             status,
             relationship_level,
+            notes,
             cast(created_on as DATETIME) as created_on,
             cast(updated_on as DATETIME) as updated_on,
             updated_by

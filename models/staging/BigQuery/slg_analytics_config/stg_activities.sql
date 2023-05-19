@@ -14,7 +14,7 @@ with activities_table as (select * from {{ source('slg_analytics_config', 'src_a
             attended_by_sdp,
             attended_by_cdpo,	
             attended_by_dpo,	
-            attended_by_ceo_Chief_Education_Officer_ as attended_by_ceo,
+            attended_by_Chief_Education_Officer as attended_by_ceo,
             attended_by_aws,	
             attended_by_aww,	
             stakeholder,	
