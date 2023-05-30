@@ -2,6 +2,7 @@ with
     sector_engagement as (select * from {{ ref("stg_activities") }}),
     sector_geographies as (select * from {{ ref("stg_sectors") }}),
     stakeholder as (select * from {{ ref("stg_stakeholders") }}),
+    centre as (select * from {{ ref('stg_centres') }}),
     joining_offline_online_meeting as (
         select
             sector_geographies.sector_id,
@@ -30,10 +31,12 @@ with
     ),
     calculate_centre_visits as (
         select
-            sector_id,
-            (sum(cast(centre_onboarding as int)) + sum(cast(home_onboarding as int))) as reported_registrations,
-            count(sector_id) as no_of_centre_visits
-        from sector_engagement
+            sector_geographies.sector_id,
+            (sum(cast(sector_engagement.centre_onboarding as int)) + sum(cast(sector_engagement.home_onboarding as int))) as reported_registrations,
+            count(sector_engagement.activity_type) as no_of_centre_visits
+        from centre
+        left join sector_engagement using (centre_id)
+        right join sector_geographies on centre.sector_id = sector_geographies.sector_id
         where activity_type = 'centre_visit'
         group by 1
     )
