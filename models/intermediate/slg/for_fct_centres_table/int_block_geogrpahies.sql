@@ -6,8 +6,8 @@ with district_geographies as (select * from {{ ref('int_district_geographies') }
             district_name,
             state_id,
             state_name
-        from block
-        left join district_geographies using (district_id)
+        from district_geographies
+        left join block using (district_id)
     )
 select 
     * 

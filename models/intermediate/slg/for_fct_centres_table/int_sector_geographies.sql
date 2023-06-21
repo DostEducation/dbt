@@ -5,8 +5,8 @@ with block_geographies as (select * from {{ ref('int_block_geogrpahies') }}),
             sector.* except(created_on, updated_on, block_id),
             sector.block_id,
             block_geographies.* except(block_id)
-        from sector
-        left join block_geographies using (block_id)
+        from block_geographies
+        left join sector using (block_id)
 
     )
 select 

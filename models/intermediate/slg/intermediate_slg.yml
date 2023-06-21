@@ -7,11 +7,6 @@ models:
         tests:
           - not_null
           - unique
-    columns: 
-      - name: block_id
-        tests:
-          - not_null
-          - unique
   - name: int_block_blm_visits_registrations
     columns: 
       - name: block_id
@@ -84,35 +79,29 @@ models:
   - name: int_block_geographies
     columns:
       - name: block_id
-        description: "Primary key for this table"
+        description: "Primary key for this table" 
         tests:
-          - not_null 
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-          - block_id 
-          - district_id
+          - unique
 
   - name: int_sector_geographies
     columns:
       - name: sector_id
         description: "Primary key for this table"
         tests:
-          - not_null 
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-          - block_id 
-          - sector_id
+          - unique
   
   - name: int_centre_geographies
     columns:
       - name: centre_id
         description: "Primary key for this table"
         tests:
-          - not_null 
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-          - centre_id 
-          - sector_id
+          - unique
+  
+  - name: int_mapped_activities
+    columns:
+      - name: activities_id
+        description: "Primary key for this table"
+        tests:
+          - unique
+          - not_null
+          

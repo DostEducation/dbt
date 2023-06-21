@@ -3,6 +3,6 @@ select
     id as district_id,
     district_name,
     state_id,
-    created_on,
-    updated_on
+    cast(created_on as DATETIME) as created_on,
+    cast(updated_on as DATETIME) as updated_on
 from district

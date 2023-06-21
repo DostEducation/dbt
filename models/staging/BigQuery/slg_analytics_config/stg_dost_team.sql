@@ -2,7 +2,7 @@ with team_member as (select * from {{ source('slg_analytics_config', 'src_dost_t
     structuring_team as (
         select
             id as dost_team_id,
-            name,
+            name as dost_member_name,
             email as email_id,
             role,
             cast(created_on as DATETIME) as created_on,

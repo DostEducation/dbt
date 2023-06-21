@@ -4,12 +4,12 @@ with state as (select * from {{ ref('stg_states') }}),
         select 
             district.*except(created_on, updated_on),
             state_name
-        from district
-        left join state using (state_id)
+        from state
+        left join district using (state_id)
     )
 select
-    state_id,
-    state_name,
     district_id,
-    district_name 
+    district_name, 
+    state_id,
+    state_name
 from district_geographies

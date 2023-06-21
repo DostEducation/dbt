@@ -8,3 +8,12 @@ models:
          tests:
            - unique
            - not_null
+
+# slg
+  - name: fct_activities
+    columns: 
+       - name: activities_id
+         description: "The primary key for this table"
+         tests:
+           - unique
+           - not_null
