@@ -13,6 +13,7 @@ with
             program_id as registration_program_id,
             district,
             state,
+            sector,
             is_child_between_0_3,
             is_child_between_3_6,
             is_child_above_6,

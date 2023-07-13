@@ -3,7 +3,7 @@ with sector_geographies as (select * from {{ ref('int_sector_geographies') }}),
     centre_geographies as (
         select 
             centre.* except (created_on, updated_on, sector_id),
-            centre.sector_id,
+            sector_geographies.sector_id,
             sector_geographies.* except(sector_id)
         from sector_geographies
         left join centre using (sector_id)
@@ -11,3 +11,4 @@ with sector_geographies as (select * from {{ ref('int_sector_geographies') }}),
 select
     *
 from centre_geographies
+-- where sector_id is not null
