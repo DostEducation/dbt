@@ -104,4 +104,12 @@ models:
         tests:
           - unique
           - not_null
+  
+  - name: int_activities
+    columns:
+      - name: activities_id
+        description: "Primary key for this table"
+        tests:
+          - unique
+          - not_null
           
