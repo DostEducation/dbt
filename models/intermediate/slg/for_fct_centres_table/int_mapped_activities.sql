@@ -8,7 +8,7 @@ with activities as (select * from {{ ref('stg_activities') }}),
         select 
             activities.* except (state_id, district_id, block_id, sector_id, centre_id),
             activities.centre_id,
-            centrewise_geo.* except (centre_id, centre_name, sector_name, block_name, district_name, state_name, total_beneficiaries,sector_code)
+            centrewise_geo.* except (centre_id, centre_name, sector_name, block_name, district_name, state_name, total_beneficiaries,sector_code,no_of_awc, potential_users,projected_registrations,projected_signups)
         from activities
         left join centrewise_geo using (centre_id)
         where activity_level = 'Centre'
@@ -18,7 +18,7 @@ with activities as (select * from {{ ref('stg_activities') }}),
             activities.* except (state_id, district_id, block_id, sector_id, centre_id),
             activities.centre_id,
             activities.sector_id,
-            sectorwise_geo.* except (sector_id, sector_name, block_name, district_name, state_name, sector_code)
+            sectorwise_geo.* except (sector_id, sector_name, block_name, district_name, state_name, sector_code,no_of_awc, potential_users,projected_registrations,projected_signups)
         from activities
         left join sectorwise_geo using (sector_id)
         where activity_level = 'Sector'
@@ -29,7 +29,7 @@ with activities as (select * from {{ ref('stg_activities') }}),
             activities.centre_id,
             activities.sector_id,
             activities.block_id,
-            blockwise_geo.* except (block_id, block_name, district_name, state_name)
+            blockwise_geo.* except (block_id, block_name, district_name, state_name, no_of_awc, potential_users,projected_registrations,projected_signups)
         from activities
         left join blockwise_geo using (block_id)
         where activity_level = 'Block'
@@ -58,7 +58,6 @@ with activities as (select * from {{ ref('stg_activities') }}),
         left join statewise_geo using (state_id)
         where activity_level = 'State'
     )
-
 select
     *
 from joining_centrewise
