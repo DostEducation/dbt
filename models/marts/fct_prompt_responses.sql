@@ -29,11 +29,16 @@ with
             user_engagement_level.first_user_week_engagement_level,
             user_engagement_level.first_user_month_engagement_level,
             user_engagement_level.overall_engagement_level,
-            user_dimensions.* except (user_id, data_source, user_phone)
+            user_dimensions.* except (user_id, data_source, user_phone),
+            CASE 
+            WHEN CAST(FLOOR(DATE_DIFF(DATE(created_on), DATE(TIMESTAMP_ADD(user_created_on, INTERVAL 330 MINUTE)), DAY)/7) AS INTEGER) + 1 > 0
+            THEN CAST(FLOOR(DATE_DIFF(DATE(created_on), DATE(TIMESTAMP_ADD(user_created_on, INTERVAL 330 MINUTE)), DAY)/7) AS INTEGER) + 1 
+            ELSE 0
+            END AS user_week_at_time_of_call
         from parsed_prompt_responses
         left join panel_users using (user_id, data_source, baseline_question_id)
         left join user_engagement_level using (user_id, data_source, program_name)
-        left join user_dimensions using (user_id, data_source, user_phone)
+        left join user_dimensions using (user_id, data_source)
 
         {% if is_incremental() %}
         -- this filter will only be applied on an incremental run
@@ -41,17 +46,7 @@ with
             ivr_prompt_response_updated_on
             > (select max(ivr_prompt_response_updated_on) from {{ this }})
         {% endif %}
-    ),
-    calculating_user_week_at_time_of_call as(
-        select  
-            *,
-            CASE 
-            WHEN CAST(FLOOR(DATE_DIFF(DATE(created_on), DATE(TIMESTAMP_ADD(user_created_on, INTERVAL 330 MINUTE)), DAY)/7) AS INTEGER) + 1 > 0
-            THEN CAST(FLOOR(DATE_DIFF(DATE(created_on), DATE(TIMESTAMP_ADD(user_created_on, INTERVAL 330 MINUTE)), DAY)/7) AS INTEGER) + 1 
-            ELSE 0
-            END AS user_week_at_time_of_call
-        from join_tables
     )
 
 select *
-from calculating_user_week_at_time_of_call
+from join_tables
