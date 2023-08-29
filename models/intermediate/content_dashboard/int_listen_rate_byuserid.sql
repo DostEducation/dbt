@@ -4,7 +4,7 @@ with program_sequence as (select * from {{ ref('stg_program_sequence') }}),
     call_records as (select * from {{ ref('stg_all_call_records') }}),
     content as (select * from {{ ref('stg_content') }}),
     by_module as (select * from {{ ref('stg_module') }}),
-    topic as (select * from {{ ref('stg_module_topic') }}),
+    topic as (select * from {{ ref('int_module_topic') }}),
     joining_content_version as (
         select 
             content.*,
