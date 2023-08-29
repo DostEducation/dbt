@@ -2,6 +2,8 @@ version: 2
 
 models:
   - name: fct_prompt_responses
+    config:
+      tags: "ivr_prompt"
     columns: 
        - name: prompt_response_uuid
          description: "The primary key for this table"
@@ -11,6 +13,8 @@ models:
 
 # slg
   - name: fct_activities
+    config:
+      tags: "slg"
     columns: 
        - name: activities_id
          description: "The primary key for this table"
