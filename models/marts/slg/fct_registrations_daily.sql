@@ -35,7 +35,7 @@ counting_user_phone as (
 counting_reported_registration as (
     select
         cast(created_on as DATE) AS created_on,
-        sum(COALESCE(cast(centre_onboarding as int),0) + COALESCE(cast(home_onboarding as int),0) + COALESCE(cast(follow_up as int),0) + COALESCE(cast(community_engagement_onboarded as int),0)) as reported_registration
+        sum(COALESCE(cast(centre_onboarding as int),0) + COALESCE(cast(home_onboarding as int),0) + COALESCE(cast(community_engagement_onboarded as int),0)) as reported_registration
     from activities
     group by 1
     order by cast(created_on as DATE) desc

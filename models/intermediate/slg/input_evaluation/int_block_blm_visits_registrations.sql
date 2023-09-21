@@ -42,12 +42,12 @@ with block as (select * from {{ ref('stg_blocks') }}),
             block.block_id,
             block.block_name,
             count(activity.activity_type) as no_of_centre_visits,
-            (sum(cast(activity.centre_onboarding as int)) + sum(cast(activity.home_onboarding as int))) as reported_registrations
+            (sum(if(cast(activity.centre_onboarding as int) is null,0,cast(activity.centre_onboarding as int))) + sum(if(cast(activity.home_onboarding as int) is null,0,cast(activity.home_onboarding as int)))+ sum(if(cast(activity.community_engagement_onboarded as int) is null,0,cast(activity.community_engagement_onboarded as int)))) as reported_registrations
         from centre
         left join activity using (centre_id)
         right join sector on centre.sector_id = sector.sector_id
         right join block on sector.block_id = block.block_id
-        where activity_type = 'centre_visit'
+        where activity_type = 'Centre Visit Onboarding'
         group by 1,2
     ),
     joining_centre_activity_sector_block_with_block as (

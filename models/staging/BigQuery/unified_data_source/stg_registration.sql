@@ -12,7 +12,7 @@ with
             parent_type,
             program_id as registration_program_id,
             district as district_name,
-            state,
+            state as state_name,
             block as block_name,
             sector as sector_name,
             is_child_between_0_3,
@@ -33,6 +33,7 @@ with
             case when district_name = 'Udham Singh Nagar' then 'USN'
             when district_name = 'Dehradun' then 'DDN'
             when district_name = 'Nanital' then 'Nainital'
+            when district_name = 'Pauri Gharwal' then 'Pauri Garhwal'
             else district_name
             end as district_name,
             case
@@ -40,6 +41,7 @@ with
                 when block_name = 'Sitargunj' then 'Sitarganj'
                 when block_name = 'Dehradun City' then 'DDN City'
                 when block_name = 'Baajpur' then 'Bazpur'
+                when block_name = 'Dugadda' then 'Duggada'
             else block_name
             end as block_name
         from registration
