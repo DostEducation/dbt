@@ -4,6 +4,7 @@ with centres as (select * from {{ source('slg_analytics_config', 'src_centres') 
             id as centre_id,
             centre_name,
             sector_id,
+            is_balvatika,
             total_beneficiaries,
             cast(created_on as DATETIME) as created_on,
             cast(updated_on as DATETIME) as updated_on
