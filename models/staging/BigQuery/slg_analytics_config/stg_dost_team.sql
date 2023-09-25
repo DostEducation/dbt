@@ -1,14 +1,16 @@
-with team_member as (select * from {{ source('slg_analytics_config', 'src_dost_team') }}),
-    structuring_team as (
+with
+    source as (select * from {{ source("slg_analytics_config", "src_dost_team") }}),
+
+    setup_columns as (
         select
             id as dost_team_id,
             name as dost_member_name,
             email as email_id,
             role,
-            cast(created_on as DATETIME) as created_on,
-            cast(updated_on as DATETIME) as updated_on
-        from team_member
+            safe_cast(created_on as datetime) as created_on,
+            safe_cast(updated_on as datetime) as updated_on
+        from source
     )
-select  
-    *
-from structuring_team
+
+select *
+from setup_columns

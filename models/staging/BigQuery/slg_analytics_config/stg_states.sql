@@ -1,8 +1,14 @@
-with states as (select * from {{ source('slg_analytics_config', 'src_states') }})
+with
+    source as (select * from {{ source("slg_analytics_config", "src_states") }}),
 
-select
-    id as state_id,
-    state_name,
-    cast(created_on as DATETIME) as created_on,
-    cast(updated_on as DATETIME) as updated_on
-from states
+    setup_columns as (
+        select
+            id as state_id,
+            state_name,
+            safe_cast(created_on as datetime) as created_on,
+            safe_cast(updated_on as datetime) as updated_on
+        from source
+    )
+
+select *
+from setup_columns

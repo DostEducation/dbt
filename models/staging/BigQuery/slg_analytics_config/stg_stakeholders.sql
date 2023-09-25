@@ -1,5 +1,7 @@
-with stakeholder_table as (select * from {{ source('slg_analytics_config', 'src_stakeholders') }}),
-    structuring_stakeholders as (
+with
+    source as (select * from {{ source("slg_analytics_config", "src_stakeholders") }}),
+
+    setup_columns as (
         select
             id as stakeholder_id,
             dost_team_id,
@@ -12,11 +14,11 @@ with stakeholder_table as (select * from {{ source('slg_analytics_config', 'src_
             status,
             relationship_level,
             notes,
-            cast(created_on as DATETIME) as created_on,
-            cast(updated_on as DATETIME) as updated_on,
+            safe_cast(created_on as datetime) as created_on,
+            safe_cast(updated_on as datetime) as updated_on,
             updated_by
-        from stakeholder_table
+        from source
     )
-select
-    * 
-from structuring_stakeholders
+
+select *
+from setup_columns

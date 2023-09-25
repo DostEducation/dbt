@@ -36,7 +36,6 @@ models:
         tests:
           - not_null
           - unique
-  
   - name: stg_activities
     description: Ops team activity tracker
     columns: 

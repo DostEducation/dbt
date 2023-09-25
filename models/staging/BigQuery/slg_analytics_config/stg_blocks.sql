@@ -1,6 +1,8 @@
-with block_geographies as (select * from {{ source('slg_analytics_config', 'src_blocks') }} ),
-    structuring_block as (
-        select 
+with
+    source as (select * from {{ source("slg_analytics_config", "src_blocks") }}),
+
+    setup_columns as (
+        select
             id as block_id,
             block_name,
             district_id,
@@ -8,10 +10,10 @@ with block_geographies as (select * from {{ source('slg_analytics_config', 'src_
             potential_users,
             projected_registrations,
             projected_signups,
-            cast(created_on as DATETIME) as created_on,
-            cast(updated_on as DATETIME) as updated_on
-        from block_geographies
+            safe_cast(created_on as datetime) as created_on,
+            safe_cast(updated_on as datetime) as updated_on
+        from source
     )
-select 
-    *
-from structuring_block
+
+select *
+from setup_columns

@@ -1,14 +1,16 @@
-with sector_geographies as (select * from {{ source('slg_analytics_config', 'src_sectors') }}),
-    structuring_table as (
-        select 
+with
+    source as (select * from {{ source("slg_analytics_config", "src_sectors") }}),
+
+    setup_columns as (
+        select
             id as sector_id,
             sector_name,
             block_id,
             sector_code,
-            cast(created_on as DATETIME) as created_on,
-            cast(updated_on as DATETIME) as updated_on
-        from sector_geographies
+            safe_cast(created_on as datetime) as created_on,
+            safe_cast(updated_on as datetime) as updated_on
+        from source
     )
-select 
-    *
-from structuring_table
+
+select *
+from setup_columns
