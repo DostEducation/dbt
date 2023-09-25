@@ -2,6 +2,7 @@ with
     activities as (select * from {{ ref('stg_activities') }}),
     geographies as (select * from {{ ref('int_geographies') }}),
     dost_team as (select * from {{ ref('stg_dost_team') }}),
+    
     joining_all_geographies as (
         select
             activities.*,
@@ -21,7 +22,8 @@ with
                     when activities.activity_level = 'Centre' then activities.centre_id = geographies.centre_id and geographies.activity_level = 'Centre'
                 end
     ),
-    adding_dost_team_info as (
+
+    add_dost_team_info as (
     select
         joining_all_geographies.*,
         dost_member_name,
@@ -29,5 +31,6 @@ with
     from joining_all_geographies
     left join dost_team using (dost_team_id)
     )
+
 select *
-from adding_dost_team_info
+from add_dost_team_info

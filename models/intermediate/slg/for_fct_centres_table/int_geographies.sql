@@ -72,7 +72,15 @@ with
         select * from sector_level
         union all
         select * from centre_level
+    ),
+
+    add_center_beneficiaries as (
+        select
+            union_all_levels.*,
+            total_beneficiaries
+        from union_all_levels
+        left join centres using (centre_id)
     )
 
 select * 
-from union_all_levels
+from add_center_beneficiaries

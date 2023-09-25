@@ -7,7 +7,7 @@ with
             centre_name,
             sector_id,
             is_balvatika,
-            total_beneficiaries,
+            safe_cast(total_beneficiaries as int) as total_beneficiaries,
             safe_cast(created_on as DATETIME) as created_on,
             safe_cast(updated_on as DATETIME) as updated_on
         from source

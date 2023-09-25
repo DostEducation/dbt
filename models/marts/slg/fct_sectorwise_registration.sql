@@ -1,27 +1,36 @@
-with centres as (select * from {{ ref('int_centre_geographies') }}),
-    activities as (select * from {{ ref('fct_activities') }}),
-    calculating_beneficiaries_centres as (
-        select 
+with
+    centres as (select * from {{ ref("int_geographies") }}),
+    activities as (select * from {{ ref("fct_activities") }}),
+
+    aggregate_total_beneficiaries as (
+        select
             district_name,
             block_name,
             sector_id,
             sector_name,
-            sum(coalesce(cast(centres.total_beneficiaries as int),0)) as total_beneficiaries,
+            sum(total_beneficiaries) as total_beneficiaries,
         from centres
-        group by 1,2,3,4
-        order by sum(coalesce(cast(centres.total_beneficiaries as int),0)) desc
+        group by 1, 2, 3, 4
     ),
-    calculating_total_onboarded as (
+
+    aggregate_reported_registrations as (
         select
             sector_id,
             sector_name,
-            sum(coalesce(cast(centre_onboarding as int),0) + coalesce(cast(home_onboarding as int),0) + coalesce(cast(community_engagement_onboarded as int),0)) as reported_registrations
+            sum(
+                coalesce(centre_onboarding, 0 ) +
+                coalesce(home_onboarding, 0 ) +
+                coalesce(community_engagement_onboarded, 0 )
+            ) as reported_registrations
         from activities
-        group by 1,2
-        order by  sum(coalesce(cast(centre_onboarding as int),0) + coalesce(cast(home_onboarding as int),0) + coalesce(cast(community_engagement_onboarded as int),0)) desc
+        group by 1, 2
+    ),
+
+    join_metrics as (
+        select aggregate_total_beneficiaries.*, reported_registrations
+        from aggregate_total_beneficiaries
+        left join aggregate_reported_registrations using (sector_id)
     )
-select 
-    calculating_beneficiaries_centres.*,
-    calculating_total_onboarded.reported_registrations
-from calculating_beneficiaries_centres
-left join calculating_total_onboarded using (sector_id)
+
+select *
+from join_metrics
