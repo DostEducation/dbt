@@ -6,11 +6,12 @@ WITH user_details AS (
     reg.state_name,
     reg.district_name,
     reg.block_name,
-    DATETIME(prompt_response.prompt_timestamp, 'Asia/Kolkata') AS user_signed_up_to_uk_program_on
+    DATETIME(prompt_response.prompt_timestamp, 'Asia/Kolkata') AS user_signed_up_to_uk_program_on,
+    reg.data_source
     FROM {{ ref('stg_registration') }} AS reg
     LEFT JOIN {{ ref('stg_ivr_prompt_response') }} as prompt_response
-        ON reg.data_source = 'admindashboard'
-        AND prompt_response.data_source= reg.data_source
+        -- ON reg.data_source = 'admindashboard'
+        ON prompt_response.data_source= reg.data_source
         AND RIGHT(prompt_response.user_phone, 10) = RIGHT(reg.user_phone, 10)
         AND prompt_response.response LIKE '%PROGRAM-OPTIN%'
         AND (prompt_response.response LIKE '%B-3%'

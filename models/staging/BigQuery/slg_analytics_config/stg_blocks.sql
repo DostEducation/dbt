@@ -7,9 +7,8 @@ with
             block_name,
             district_id,
             no_of_awc,
-            potential_users,
-            projected_registrations,
-            projected_signups,
+            total_beneficiaries,
+            target_beneficiaries_slg,
             safe_cast(created_on as datetime) as created_on,
             safe_cast(updated_on as datetime) as updated_on
         from source

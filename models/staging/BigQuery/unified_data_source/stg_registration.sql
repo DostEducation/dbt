@@ -29,7 +29,8 @@ with
     ),
     fixing_block_district_names as (
         select
-            * except(district_name, block_name),
+            * except(district_name, block_name,state_name),
+            case when state_name = 'Uttarakhand' then 'UK' else state_name end as state_name,
             case when district_name = 'Udham Singh Nagar' then 'USN'
             when district_name = 'Dehradun' then 'DDN'
             when district_name = 'Nanital' then 'Nainital'

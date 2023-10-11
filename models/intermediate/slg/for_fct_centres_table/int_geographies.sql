@@ -77,7 +77,8 @@ with
     add_center_beneficiaries as (
         select
             union_all_levels.*,
-            total_beneficiaries
+            total_beneficiaries,
+            is_balvatika
         from union_all_levels
         left join centres using (centre_id)
     )
