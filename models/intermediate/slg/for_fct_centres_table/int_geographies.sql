@@ -81,7 +81,13 @@ with
             is_balvatika
         from union_all_levels
         left join centres using (centre_id)
+    ),
+    add_target_beneficiaries as (
+        select
+            add_center_beneficiaries.*,
+            target_beneficiaries_slg
+        from add_center_beneficiaries
+        left join blocks using (block_id)
     )
-
 select * 
-from add_center_beneficiaries
+from add_target_beneficiaries
