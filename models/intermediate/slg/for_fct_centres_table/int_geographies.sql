@@ -12,7 +12,9 @@ with
             cast(null as string) as block_id, cast(null as string) as block_name,
             cast(null as string) as sector_id, cast(null as string) as sector_name,
             cast(null as string) as centre_id, cast(null as string) as centre_name,
-            'State' as activity_level
+            'State' as activity_level,
+            state_name as activity_level_label,
+            state_id as activity_level_id
         from states
     ),
 
@@ -23,7 +25,9 @@ with
             cast(null as string) as block_id, cast(null as string) as block_name,
             cast(null as string) as sector_id, cast(null as string) as sector_name,
             cast(null as string) as centre_id, cast(null as string) as centre_name,
-            'District' as activity_level
+            'District' as activity_level,
+            districts.district_name as activity_level_label,
+            districts.district_id as activity_level_id
         from state_level
         inner join districts using (state_id)
     ),
@@ -35,7 +39,9 @@ with
             blocks.block_id, blocks.block_name,
             cast(null as string) as sector_id, cast(null as string) as sector_name,
             cast(null as string) as centre_id, cast(null as string) as centre_name,
-            'Block' as activity_level
+            'Block' as activity_level,
+            blocks.block_name as activity_level_label,
+            blocks.block_id as activity_level_id
         from district_level
         inner join blocks using (district_id)
     ),
@@ -46,7 +52,9 @@ with
             block_id, block_name,
             sectors.sector_id, sectors.sector_name,
             cast(null as string) as centre_id, cast(null as string) as centre_name,
-            'Sector' as activity_level
+            'Sector' as activity_level,
+            sectors.sector_name as activity_level_label,
+            sectors.sector_id as activity_level_id
         from block_level
         inner join sectors using (block_id)
     ),
@@ -57,7 +65,9 @@ with
             block_id, block_name,
             sector_id, sector_name,
             centres.centre_id, centres.centre_name,
-            'Centre' as activity_level
+            'Centre' as activity_level,
+            centres.centre_name as activity_level_label,
+            centres.centre_id as activity_level_id
         from sector_level
         inner join centres using (sector_id)
     ),
@@ -81,7 +91,20 @@ with
             is_balvatika
         from union_all_levels
         left join centres using (centre_id)
+    ),
+
+    rollup_total_beneficiaries as (
+        select
+            * except (total_beneficiaries),
+            case
+                when activity_level = 'Center' then total_beneficiaries
+                when activity_level = 'Sector' then sum(total_beneficiaries) over (partition by sector_id)
+                when activity_level = 'Block' then sum(total_beneficiaries) over (partition by block_id)
+                when activity_level = 'District' then sum(total_beneficiaries) over (partition by district_id)
+                when activity_level = 'State' then sum(total_beneficiaries) over (partition by state_id)
+            end as total_beneficiaries
+        from add_center_beneficiaries
     )
 
 select * 
-from add_center_beneficiaries
+from rollup_total_beneficiaries

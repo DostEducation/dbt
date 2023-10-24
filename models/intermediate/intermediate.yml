@@ -1,6 +1,13 @@
 version: 2
 
 models:
+  - name: int_dates
+    columns:
+      - name: date
+        description: ""
+        tests:
+          - not_null
+          - unique 
   - name: int_useragewise_user_activation
     columns:
       - name: user_id
