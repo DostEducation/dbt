@@ -17,12 +17,12 @@ with
     ),
 
     add_dost_team_info as (
-    select
-        joining_all_geographies.*,
-        dost_member_name,
-        role
-    from joining_all_geographies
-    left join dost_team using (dost_team_id)
+        select
+            joining_all_geographies.*,
+            dost_member_name,
+            role
+        from joining_all_geographies
+        left join dost_team using (dost_team_id)
     )
 
 select *
