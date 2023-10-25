@@ -38,7 +38,31 @@ with
             safe_cast(updated_on as datetime) as updated_on,
             updated_by
         from source
+    ),
+
+    get_reported_registrations as (   
+        select
+            *,
+            coalesce(centre_onboarding , 0)
+            + coalesce(home_onboarding, 0)
+            + coalesce(community_engagement_onboarded, 0)
+            as registration_on_app
+        from setup_columns
+    ),
+
+    add_activity_level_details as (
+        select
+            *,
+            case
+                when activity_level = 'Centre' then centre_id
+                when activity_level = 'Sector' then sector_id
+                when activity_level = 'Block' then block_id
+                when activity_level = 'District' then district_id
+                when activity_level = 'State' then state_id
+            end as activity_level_id
+        from
+            get_reported_registrations
     )
 
 select *
-from setup_columns
+from add_activity_level_details

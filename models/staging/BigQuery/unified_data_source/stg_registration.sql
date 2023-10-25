@@ -1,5 +1,10 @@
 with
-    registration as (
+    source as (
+        select * from {{ source("unified_data_source", "registration") }}
+        where migrated_on <= timestamp_sub(current_timestamp(), interval 100 minute)
+    ),
+
+    setup_columns as (
         select
             id as registration_id,
             uuid as registration_uuid,
@@ -24,30 +29,42 @@ with
             occupation,
             gender_of_child,
             signup_date
-        from {{ source("unified_data_source", "registration") }}
-        where migrated_on <= TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 100 MINUTE)
+        from source
     ),
-    fixing_block_district_names as (
+
+    fix_block_district_names as (
         select
-            * except(district_name, block_name,state_name),
-            case when state_name = 'Uttarakhand' then 'UK' else state_name end as state_name,
-            case when district_name = 'Udham Singh Nagar' then 'USN'
-            when district_name = 'Dehradun' then 'DDN'
-            when district_name = 'Nanital' then 'Nainital'
-            when district_name = 'Pauri Gharwal' then 'Pauri Garhwal'
-            else district_name
+            * except (district_name, block_name, state_name),
+            case
+                when state_name = 'Uttarakhand' then 'UK' else state_name
+            end as state_name,
+            case
+                when district_name = 'Udham Singh Nagar'
+                then 'USN'
+                when district_name = 'Dehradun'
+                then 'DDN'
+                when district_name = 'Nanital'
+                then 'Nainital'
+                when district_name = 'Pauri Gharwal'
+                then 'Pauri Garhwal'
+                else district_name
             end as district_name,
             case
-                when block_name = 'Vikasnagar' then 'Vikashnagar'
-                when block_name = 'Sitargunj' then 'Sitarganj'
-                when block_name = 'Dehradun City' then 'DDN City'
-                when block_name = 'Baajpur' then 'Bazpur'
-                when block_name = 'Dugadda' then 'Duggada'
-            else block_name
+                when block_name = 'Vikasnagar'
+                then 'Vikashnagar'
+                when block_name = 'Sitargunj'
+                then 'Sitarganj'
+                when block_name = 'Dehradun City'
+                then 'DDN City'
+                when block_name = 'Baajpur'
+                then 'Bazpur'
+                when block_name = 'Dugadda'
+                then 'Duggada'
+                else block_name
             end as block_name
-        from registration
+        from setup_columns
 
     )
 
 select *
-from fixing_block_district_names
+from fix_block_district_names
