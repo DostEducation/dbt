@@ -88,6 +88,13 @@ with
             target_beneficiaries_slg
         from add_center_beneficiaries
         left join blocks using (block_id)
+    ),
+    add_dost_team_info as(
+        select
+            add_target_beneficiaries.*,
+            sector_assigned_to as sectors_assigned_to_id
+        from add_target_beneficiaries
+        left join sectors using (sector_id)
     )
 select * 
-from add_target_beneficiaries
+from add_dost_team_info
