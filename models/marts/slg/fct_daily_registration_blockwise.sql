@@ -6,7 +6,7 @@ with
 
     cross_join_dates as (select * from dates cross join geographies),
 
-    calculate_registrations_on_database_sectorwise as (
+    calculate_sectorwise_registrations_on_database as (
         select
             sector_name,
             cast(user_created_on as date) as date,
@@ -15,7 +15,7 @@ with
         where user_created_on >= '2021-06-01' and sector_name is not null
         group by 1, 2
     ),
-    calculate_registrations_on_database as (
+    calculate_blockwise_registrations_on_database as (
         select
             block_name as block_name,
             cast(user_created_on as date) as date,
@@ -24,19 +24,18 @@ with
         where user_created_on >= '2021-06-01' and sector_name is null
         group by 1, 2
     ),
-
     join_registrations_on_database_sectorwise as (
         select
             * 
         from cross_join_dates
-        left join calculate_registrations_on_database_sectorwise using (date,sector_name)
+        left join calculate_sectorwise_registrations_on_database using (date,sector_name)
         where activity_level = 'Sector'
     ),
     join_registrations_on_database_blockwise as (
         select
             * 
         from cross_join_dates
-        left join calculate_registrations_on_database using (date,block_name)
+        left join calculate_blockwise_registrations_on_database using (date,block_name)
         where activity_level = 'Block'
     ),
     append_sector_block_registration as (
@@ -55,7 +54,6 @@ with
         from cross_join_dates
         left join append_sector_block_registration using (activity_level, activity_level_id,date)
     ),
-
     rollup_registrations_on_database as (
         select
             * except (registrations_on_database),
@@ -97,6 +95,7 @@ with
 
 select *
 from join_registrations_on_app
+
 -- where registrations_on_database is not null
 -- where sectors_assigned_to_id is not null
 -- where activity_level = 'Block'
