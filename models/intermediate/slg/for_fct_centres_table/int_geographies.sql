@@ -107,11 +107,10 @@ with
                 when activity_level = 'State' then sum(total_beneficiaries) over (partition by state_id)
             end as total_beneficiaries
         from union_all_levels
-        left join centres using (centre_id)
     ),
     add_dost_team_info as(
         select
-            add_target_beneficiaries.*,
+            rollup_total_beneficiaries.*,
             sector_assigned_to as sectors_assigned_to_id
         from rollup_total_beneficiaries
         left join sectors using (sector_id)
