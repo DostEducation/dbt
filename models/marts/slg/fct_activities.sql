@@ -3,7 +3,7 @@ with
     geographies as (select * from {{ ref('int_geographies') }}),
     dost_team as (select * from {{ ref('stg_dost_team') }}),
     
-    joining_all_geographies as (
+    get_geography_labels as (
         select
             activities.*,
             state_name,
@@ -11,7 +11,7 @@ with
             block_name,
             sector_name,
             centre_name,
-            sectors_assigned_to_id
+            sector_assigned_to_id
         from
             activities
             left join geographies using (activity_level, activity_level_id)
@@ -19,19 +19,21 @@ with
 
     add_dost_team_info as (
     select
-        joining_all_geographies.*,
-        dost_member_name,
-        role
-    from joining_all_geographies
+        get_geography_labels.*,
+        dost_member_name as activity_performed_by,
+        role as activity_performed_by_role,
+    from get_geography_labels
     left join dost_team using (dost_team_id)
     ),
-    add_sectors_assigned_to as (
+
+    add_sector_assigned_to_info as (
         select
             add_dost_team_info.*,
-            dost_team.dost_member_name as sector_assigned_to
+            dost_member_name as sector_assigned_to_name,
+            role as sector_assigned_to_role,
         from add_dost_team_info
-        left join dost_team on dost_team.dost_team_id = add_dost_team_info.sectors_assigned_to_id
+        left join dost_team on dost_team.dost_team_id = add_dost_team_info.sector_assigned_to_id
     )
 
 select *
-from add_sectors_assigned_to
+from add_sector_assigned_to_info

@@ -111,21 +111,11 @@ with
     add_dost_team_info as(
         select
             rollup_total_beneficiaries.*,
-            sector_assigned_to as sectors_assigned_to_id
+            sector_assigned_to as sector_assigned_to_id
         from rollup_total_beneficiaries
         left join sectors using (sector_id)
     )
 
 select
     *
-    -- sum(total_beneficiaries)
 from add_dost_team_info
-where
-    true
-    -- and activity_level = 'Sector'
-    -- and state_name = 'UK'
-    -- and district_name = 'DDN'
-    -- and block_name = 'Vikashnagar'
-    -- and sector_name = 'Dhakrani'
-    -- and sector_id = '83e98315'
-    -- and total_beneficiaries is not null

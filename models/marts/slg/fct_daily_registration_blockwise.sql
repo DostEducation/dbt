@@ -72,15 +72,20 @@ with
         select
             activity_level,
             activity_level_id,
-            cast(activities.created_on as date) as date,
+            cast(activities.date_of_meeting as date) as date,
             sum(
                 registration_on_app
             ) as registration_on_app
         from activities
         group by 1, 2, 3
     ),
-
     join_registrations_on_app as(
+        select
+            *
+        from rollup_registrations_on_database
+        left join calculate_registrations_on_app using (activity_level, activity_level_id, date)
+    ),
+    rollup_registrations_on_app as(
         select
             * except (registration_on_app),
             case
@@ -90,61 +95,68 @@ with
                 when activity_level = 'District' then sum(registration_on_app) over (partition by district_id, date)
                 when activity_level = 'State' then sum(registration_on_app) over (partition by state_id, date)                
             end as registration_on_app
-        from rollup_registrations_on_database
-        left join calculate_registrations_on_app using (activity_level, activity_level_id, date)
+        from join_registrations_on_app
     ),
-    add_centre_visit as (
+
+    calculate_centres_visited as (
         select 
+            'Centre' as activity_level,
+            centre_id as activity_level_id,
             cast(date_of_meeting as date) as date,
-            centre_name,
-            count(distinct centre_id) as centre_visited
+            1 as centres_visited
         from activities
-        where activity_type = 'Centre Visit Onboarding'
-        group by 1,2
+        where activity_type = 'Centre Visit Onboarding' and activity_level = 'Centre'
+        group by 1, 2, 3
     ),
-    join_centre_visit_with_main_table as (
+    join_centres_visited as (
         select
             *
-        from cross_join_dates
-        left join add_centre_visit using (date,centre_name)
+        from rollup_registrations_on_app
+        left join calculate_centres_visited using (activity_level, activity_level_id, date)
     ),
-    rolling_up_centre_visited as (
+    roll_up_centres_visited as (
         select
-            join_registrations_on_app.*,
+            * except (centres_visited),
             case
-                when activity_level = 'Centre' then sum(centre_visited) over (partition by join_registrations_on_app.centre_id, date)
-                when activity_level = 'Sector' then sum(centre_visited) over (partition by join_registrations_on_app.sector_id, date)
-                when activity_level = 'Block' then sum(centre_visited) over (partition by join_registrations_on_app.block_id, date)
-                when activity_level = 'District' then sum(centre_visited) over (partition by join_registrations_on_app.district_id, date)
-                when activity_level = 'State' then sum(centre_visited) over (partition by join_registrations_on_app.state_id, date)                
-            end as centre_visited
-        from join_registrations_on_app
-        left join join_centre_visit_with_main_table using (activity_level, activity_level_id, date)
+                when activity_level = 'Centre' then sum(centres_visited) over (partition by centre_id, date)
+                when activity_level = 'Sector' then sum(centres_visited) over (partition by sector_id, date)
+                when activity_level = 'Block' then sum(centres_visited) over (partition by block_id, date)
+                when activity_level = 'District' then sum(centres_visited) over (partition by district_id, date)
+                when activity_level = 'State' then sum(centres_visited) over (partition by state_id, date)                
+            end as centres_visited
+        from join_centres_visited
     ),
-    add_dost_info as (
+    calculate_registrations_over_reported as (
         select
-            rolling_up_centre_visited.*,
-            dost_member_name
-        from rolling_up_centre_visited
-        left join dost_team on rolling_up_centre_visited.sectors_assigned_to_id = dost_team.dost_team_id
+            *,
+            coalesce(registration_on_app, 0) - coalesce(registrations_on_database, 0) as registrations_over_reported
+        from roll_up_centres_visited
+    ),
+
+    calculate_centers_available as (
+        select
+            *,
+            case
+                when activity_level = 'Centre' then 1 
+                when activity_level = 'Sector' then count(distinct centre_id) over (partition by sector_id, date)
+                when activity_level = 'Block' then count(distinct centre_id) over (partition by block_id, date)
+                when activity_level = 'District' then count(distinct centre_id) over (partition by district_id, date)
+                when activity_level = 'State' then count(distinct centre_id) over (partition by state_id, date)                
+            end as centers_available
+        from calculate_registrations_over_reported
+    ),
+    get_sector_assigned_to_info as (
+        select
+            calculate_centers_available.*,
+            dost_member_name as sector_assigned_to_name,
+            role as sector_assigned_to_role,
+        from calculate_centers_available
+        left join dost_team on sector_assigned_to_id = dost_team_id
     )
-select *, ((coalesce(registration_on_app,0) - coalesce(registrations_on_database,0)) / registrations_on_database) as percent_over_reported
-from add_dost_info
--- where dost_member_name is not null
--- where registrations_on_database is not null
--- where sectors_assigned_to_id is not null
--- where activity_level = 'Block'
--- where
-    -- true
-    -- and activity_level = 'State'
-    -- and state_name = 'UK'
-    -- and district_name = 'DDN'
-    -- and block_name = 'Vikashnagar'
-    -- and sector_name = 'Dhakrani'
-    -- and sector_id = '83e98315'
-    -- and registrations_on_database is not null
-    -- and date >= '2023-10-01'
--- order by date
+
+select *
+from get_sector_assigned_to_info
+
 
 
 
