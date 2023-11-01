@@ -153,10 +153,18 @@ with
         from calculate_centers_available
         left join dost_team on sector_assigned_to_id = dost_team_id
     )
-
-select *
+select
+    *
 from get_sector_assigned_to_info
 
-
-
-
+-- select sector_assigned_to_name, sum(registrations_on_database) as AR, sum(registration_on_app)as RR, safe_divide(sum(registrations_over_reported), sum(registrations_on_database))*100 as percent_overreported, sum(centres_visited) as centres_visited, safe_divide(sum(centres_visited), sum(centers_available)) as percent_centresvisited
+-- from get_sector_assigned_to_info
+-- where sector_assigned_to_name is not null
+--     and activity_level = 'Sector' 
+--     and date >= '2023-10-01'
+--     -- and district_name = 'USN'
+--     -- and block_name = 'Haldwani Urban'
+--     -- and sector_name = 'Rajendra Nagar'
+--     -- and sector_assigned_to_name = 'Kajal'
+--     -- and date between '2023-10-09' and '2023-10-24'
+-- group by 1
