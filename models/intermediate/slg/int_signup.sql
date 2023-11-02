@@ -69,30 +69,8 @@ WITH  dates as (select * from {{ ref('int_dates') }}),
         select
             *
         from join_signup_blockwise
-    ),
-    add_appended_data_to_cross_join_table as (
-        select
-            cross_join_dates.*,
-            append_signup.signup
-        from cross_join_dates
-        left join append_signup using (activity_level, activity_level_id,date)
-    ),
-    rollup_signups as (
-        select
-            * except (signup),
-            case
-                when activity_level  = 'Centre' then null
-                when activity_level = 'Sector' then signup
-                when activity_level = 'Block' then sum(signup) over (partition by block_id, date)
-                when activity_level = 'District' then sum(signup) over (partition by state_id, district_id, date)
-                when activity_level = 'State' then sum(signup) over (partition by state_id, date)
-            end as signup
-        from add_appended_data_to_cross_join_table
     )
+   
 select
     *
-from rollup_signups
-where 
-    true
-    -- state_name = 'UK' 
-    -- and activity_level = 'Block'
+from append_signup

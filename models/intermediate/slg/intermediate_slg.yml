@@ -1,107 +1,26 @@
 version: 2
 
 models:
-  - name: int_improvised_blockwise_info
-    columns: 
-      - name: block_id
-        tests:
-          - not_null
-          - unique
-  - name: int_block_blm_visits_registrations
-    columns: 
-      - name: block_id
-        tests:
-          - not_null
-          - unique
-  - name: int_sector_slm_visits_registrations
-    columns: 
-      - name: sector_id
-        tests:
-          - not_null
-          - unique
-  - name: int_finding_duplicate_dost_team
-    columns: 
-      - name: dost_team_id
-        tests:
-          - not_null
-          - unique
-  - name: int_finding_duplicate_blocks
-    columns: 
-      - name: block_id
-        tests:
-          - not_null
-          - unique
-  - name: int_finding_duplicate_sectors
-    columns: 
-      - name: sector_id
-        tests:
-          - not_null
-          - unique
-  - name: int_finding_duplicate_centres
-    columns: 
-      - name: centre_id
-        tests:
-          - not_null
-          - unique
-  - name: int_sector_engagement
-    columns:
-      - name: sector_id
-        tests:
-          - not_null
-    
+ 
+  - name: int_geographies
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-          - sector_id
-          - year_and_month
-  - name: int_centre_onboarding_level
-    columns:
-      - name: centre_id
-        tests:
-          - not_null
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-          - centre_id
-          - year_and_month    
-  - name: int_district_geographies
-    columns:
-      - name: district_id
-        description: "Primary key for this table"
-        tests:
-          - not_null 
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-          - district_id
-          - state_id  
+          - activity_level
+          - activity_level_id
   
-  - name: int_block_geographies
-    columns:
-      - name: block_id
-        description: "Primary key for this table" 
-        tests:
-          - unique
+  - name: int_registrations_on_database
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+          - activity_level
+          - activity_level_id
+          - date
 
-  - name: int_sector_geographies
-    columns:
-      - name: sector_id
-        description: "Primary key for this table"
-        tests:
-          - unique
-  
-  - name: int_centre_geographies
-    columns:
-      - name: centre_id
-        description: "Primary key for this table"
-        tests:
-          - unique
-  
-  - name: int_activities
-    columns:
-      - name: activities_id
-        description: "Primary key for this table"
-        tests:
-          - unique
-          - not_null
-          
+  - name: int_signup
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+          - activity_level
+          - activity_level_id
+          - date

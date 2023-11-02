@@ -4,6 +4,7 @@ with
     registrations as (select * from {{ ref("stg_registration") }}),
     activities as (select * from {{ ref("fct_activities") }}),
     dost_team as (select * from {{ ref('stg_dost_team') }}),
+    signup_database as (Select * from {{ ref('int_signup') }}),
 
     cross_join_dates as (select * from dates cross join geographies),
 
@@ -152,19 +153,33 @@ with
             role as sector_assigned_to_role,
         from calculate_centers_available
         left join dost_team on sector_assigned_to_id = dost_team_id
+    ),
+     add_signup_data_to_cross_join_table as (
+        select
+            cross_join_dates.*,
+            signup
+        from cross_join_dates
+        left join signup_database using (activity_level, activity_level_id,date)
+    ),
+    join_signup_with_main_table as (
+        select 
+            get_sector_assigned_to_info.*,
+            signup
+        from get_sector_assigned_to_info
+        left join add_signup_data_to_cross_join_table using (activity_level, activity_level_id,date)
+    ),
+    rollup_signups as (
+        select
+            * except (signup),
+            case
+                when activity_level  = 'Centre' then null
+                when activity_level = 'Sector' then signup
+                when activity_level = 'Block' then sum(signup) over (partition by block_id, date)
+                when activity_level = 'District' then sum(signup) over (partition by state_id, district_id, date)
+                when activity_level = 'State' then sum(signup) over (partition by state_id, date)
+            end as signup
+        from join_signup_with_main_table
     )
 select
     *
-from get_sector_assigned_to_info
-
--- select sector_assigned_to_name, sum(registrations_on_database) as AR, sum(registration_on_app)as RR, safe_divide(sum(registrations_over_reported), sum(registrations_on_database))*100 as percent_overreported, sum(centres_visited) as centres_visited, safe_divide(sum(centres_visited), sum(centers_available)) as percent_centresvisited
--- from get_sector_assigned_to_info
--- where sector_assigned_to_name is not null
---     and activity_level = 'Sector' 
---     and date >= '2023-10-01'
---     -- and district_name = 'USN'
---     -- and block_name = 'Haldwani Urban'
---     -- and sector_name = 'Rajendra Nagar'
---     -- and sector_assigned_to_name = 'Kajal'
---     -- and date between '2023-10-09' and '2023-10-24'
--- group by 1
+from rollup_signups
