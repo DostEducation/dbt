@@ -2,6 +2,23 @@ version: 2
 
 models:
  
+  - name: int_date_geographies
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+          - activity_level
+          - activity_level_id
+          - date
+  
+  - name: int_activity_metrics
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+          - activity_level
+          - activity_level_id
+          - date
+  
+
   - name: int_geographies
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -9,15 +26,7 @@ models:
           - activity_level
           - activity_level_id
   
-  - name: int_registrations_on_database
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-          - activity_level
-          - activity_level_id
-          - date
-
-  - name: int_signup
+  - name: int_registration_metrics
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
