@@ -2,14 +2,20 @@ version: 2
 
 models:
   - name: stg_monthwise_engagement_level
+    config:
+      tags: "ivr_prompt"
     description: Gives you monthwise user engagement level
     columns:
       - name: user_id
   - name: stg_daily_engagement_user_agewise
+    config:
+      tags: "ivr_prompt"
     description: "Gives data of daily engagement of a user"
     columns:
       - name: user_id
   - name: stg_unified_enrolled_user
+    config:
+      tags: "ivr_prompt"
     description: "Gives all the info about the calls of users "
     columns:
       - name: log_created_on
@@ -86,6 +92,8 @@ models:
       - name: program_id
       - name: migrated_on
   - name: stg_all_call_records
+    config:
+      tags: "ivr_prompt"
     description: All call records of a user who is been signed up for the program
     columns:
       - name: all_call_record_uuid
@@ -106,6 +114,8 @@ models:
     #   warn_after: {count: 12, period: hour}
     #   error_after: {count: 24, period: hour}
   - name: stg_campaign
+    config:
+      tags: "ivr_prompt"
     description: add here
     columns:
       - name: callsid
@@ -113,6 +123,8 @@ models:
           - unique
           - not_null
   - name: stg_call_log
+    config:
+      tags: "ivr_prompt"
     description: add here
     columns:
       - name: call_log_id
@@ -120,6 +132,8 @@ models:
           - unique
           - not_null
   - name: stg_language
+    config:
+      tags: "ivr_prompt"
     description: Will tell you what all languages the program is available in
     columns:
       - name: uuid
@@ -133,6 +147,8 @@ models:
       - name: data_source
       - name: migrated_on
   - name: stg_users
+    config:
+      tags: "ivr_prompt"
     description: personal info about all the users
     columns: 
       - name: user_uuid
@@ -148,6 +164,8 @@ models:
             - data_source
             - user_id
   - name: stg_content_version
+    config:
+      tags: "ivr_prompt"
     description: Version of the content that is being used when a user calls
     columns:
       - name: content_version_id
@@ -159,6 +177,8 @@ models:
             - data_source
             - content_version_id
   - name: stg_content
+    config:
+      tags: "ivr_prompt"
     description: The content that is actually being used over the phone when the user calls
     columns:
       - name: content_id
@@ -173,6 +193,8 @@ models:
             - data_source
             - content_id
   - name: stg_program_sequence
+    config:
+      tags: "ivr_prompt"
     description: The sequence in which the program being used.
     columns:
       - name: program_sequence_id
@@ -189,6 +211,8 @@ models:
             - data_source
             - program_sequence_id
   - name: stg_program
+    config:
+      tags: "ivr_prompt"
     description: The programs that are used according to the user type(ex, T3, B6)
     columns:
       - name: program_id
@@ -207,6 +231,8 @@ models:
             - data_source
             - program_id
   - name: stg_module
+    config:
+      tags: "ivr_prompt"
     description: The programs that are used according to the user type(ex, T3, B6)
     columns:
       - name: module_id
@@ -218,6 +244,8 @@ models:
             - data_source
             - module_id
   - name: stg_ivr_prompt_response
+    config:
+      tags: "ivr_prompt"
     description: Responses captured of the prompt questions from the users 
     columns:
       - name: prompt_response_id
@@ -244,6 +272,8 @@ models:
             - data_source
             - prompt_response_id
   - name: stg_registration
+    config:
+      tags: ["slg", "ivr_prompt"]
     description: Number of registrations done by each volunteers
     columns: 
       - name: registration_uuid
@@ -258,11 +288,15 @@ models:
             - user_id
             - user_phone
   - name: stg_program_wise_engagement
+    config:
+      tags: "ivr_prompt"
     description: Shows what level of user engagement is there program wise
     columns:
       - name: user_id
         description: Primary key for table program wise engagement
   - name: stg_partner
+    config:
+      tags: "ivr_prompt"
     description: Tells you what different partners are involved that is ivr or admindashboard
     columns: 
       - name: partner_id

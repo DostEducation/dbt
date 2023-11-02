@@ -1,0 +1,48 @@
+version: 2
+
+sources:
+  - name: slg_analytics_config
+    description: Dost Ops team activity tracker 
+    database: cryptic-gate-211900
+    schema: slg_analytics_config
+    tables:
+      - name: src_sectors
+        description: Sector level Geographies to map Block, District etc
+        columns:
+          - name: id
+            description: Sector ID of Sector
+      - name: src_blocks
+        description: Block Level Geographies to Map district, state
+        columns:
+          - name: block_id
+            description: Block ID for Block name
+      - name: src_centres
+        description: Centres information including geographies and beneficiaries
+        columns:
+          - name: id
+            description: Centre ID which is unique
+      - name: src_dost_team
+        description: Team member info
+        columns:
+          - name: id
+            description: Unique ID of every member
+      - name: src_stakeholders
+        description: Stakeholder info
+        columns:
+          - name: id
+            description: Unique ID of every stakeholder
+      - name: src_activities
+        description: activity tracker
+        columns:
+          - name: id
+            description: Unique id of each activity
+      - name: src_districts
+        description: District info
+        columns:
+          - name: id
+            description: Unique ID of the table
+      - name: src_states
+        description: state info
+        columns:
+          - name: id
+            description: Unique ID of the table

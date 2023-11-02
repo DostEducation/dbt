@@ -2,9 +2,41 @@ version: 2
 
 models:
   - name: fct_prompt_responses
+    config:
+      tags: "ivr_prompt"
     columns: 
        - name: prompt_response_uuid
          description: "The primary key for this table"
          tests:
            - unique
            - not_null
+
+# slg
+  - name: fct_activities
+    config:
+      tags: "slg"
+    columns: 
+       - name: activities_id
+         description: "The primary key for this table"
+         tests:
+           - unique
+           - not_null
+  - name: fct_signup
+    config:
+      tags: "slg"
+    columns: 
+       - name: user_phone
+         description: "The primary key for this table"
+         tests:
+           - unique
+           - not_null
+  - name: fct_centres
+    config:
+      tags: "slg"
+    columns: 
+       - name: centre_id
+         description: "The primary key for this table"
+         tests:
+           - unique
+           - not_null
+  

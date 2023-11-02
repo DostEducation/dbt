@@ -2,6 +2,8 @@ version: 2
 
 models:
   - name: stg_outcomes
+    config:
+      tags: "ivr_prompt"
     description: This table displays the different outcomes reached via the program 
     columns:
       - name: outcome_id
@@ -12,6 +14,8 @@ models:
       - name: count_of_indicators
         description: column used to map outcomes table from indicators table
   - name: stg_indicators
+    config:
+      tags: "ivr_prompt"
     description: Describes user attributes sub categorized into different topics
     columns:
       - name: indicator_id
@@ -32,6 +36,8 @@ models:
       - name: count_of_questions_mapped
         description: This column is only used to map the indicator table
   - name: stg_questions
+    config:
+      tags: "ivr_prompt"
     description: This table tells us what questions will be asked as a prompt over the call in the program
     columns:
       - name: question_id
@@ -59,6 +65,8 @@ models:
       - name: count_of_configured_responses
         description: This column tells us how many responses have been mapped to a particular question
   - name: stg_question_placement
+    config:
+      tags: "ivr_prompt"
     description: This table shows what questions are mapped to what table of the data model in the program
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -88,6 +96,8 @@ models:
       - name: program_sequence_id
         description: This column shows what program sequence id is mapped
   - name: stg_configured_responses
+    config:
+      tags: "ivr_prompt"
     description: The tables shows the responses that are being mapped to their respective questions
     tests:
       - dbt_utils.unique_combination_of_columns:

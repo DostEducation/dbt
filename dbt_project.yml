@@ -35,8 +35,18 @@ models:
   dbt_dost:
     # Config indicated by + and applies to all files under models/example/
     staging:
+      BigQuery:
+        slg_analytics_config:
+          +tags: 
+            - "slg"
       +materialized: view
     intermediate:
+      slg:
+        +tags: 
+          - "slg"
       +materialized: view
     marts:
+      slg:
+        +tags: 
+          - "slg"
       +materialized: table
