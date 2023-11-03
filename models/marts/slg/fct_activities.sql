@@ -11,7 +11,9 @@ with
             block_name,
             sector_name,
             centre_name,
-            sector_assigned_to_id
+            sector_assigned_to_id,
+            sector_assigned_to_name,
+            sector_assigned_to_role
         from
             activities
             left join geographies using (activity_level, activity_level_id)
@@ -24,16 +26,7 @@ with
         role as activity_performed_by_role,
     from get_geography_labels
     left join dost_team using (dost_team_id)
-    ),
-
-    add_sector_assigned_to_info as (
-        select
-            add_dost_team_info.*,
-            dost_member_name as sector_assigned_to_name,
-            role as sector_assigned_to_role,
-        from add_dost_team_info
-        left join dost_team on dost_team.dost_team_id = add_dost_team_info.sector_assigned_to_id
     )
 
 select *
-from add_sector_assigned_to_info
+from add_dost_team_info
