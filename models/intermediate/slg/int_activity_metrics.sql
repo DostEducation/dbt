@@ -1,6 +1,8 @@
-with activities as (select * from {{ ref("fct_activities") }}),
-    cross_join_dates as (select * from {{ ref('int_date_geographies') }}),
+with
+    activities as (select * from {{ ref("fct_activities") }}),
+    date_geographies as (select * from {{ ref('int_date_geographies') }}),
 
+    -- registrations on app
     calculate_registrations_on_app as (
         select
             activity_level,
@@ -15,9 +17,9 @@ with activities as (select * from {{ ref("fct_activities") }}),
     join_registrations_on_app as(
         select
             *
-        from cross_join_dates
+        from date_geographies
         left join calculate_registrations_on_app using (activity_level, activity_level_id, date)
-        ),
+    ),
     rollup_registrations_on_app as(
         select
             * except (registration_on_app),
@@ -31,6 +33,7 @@ with activities as (select * from {{ ref("fct_activities") }}),
         from join_registrations_on_app
     ),
 
+    -- centres visited
     calculate_centres_visited as (
         select 
             'Centre' as activity_level,
@@ -59,7 +62,7 @@ with activities as (select * from {{ ref("fct_activities") }}),
             end as centres_visited
         from join_centres_visited
     ),
-    calculate_centers_available as (
+    calculate_centres_available as (
         select
             *,
             case
@@ -71,6 +74,6 @@ with activities as (select * from {{ ref("fct_activities") }}),
             end as centres_available
         from roll_up_centres_visited
     )
-select
-    *
-from calculate_centers_available
+
+select *
+from calculate_centres_available

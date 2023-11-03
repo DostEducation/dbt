@@ -1,4 +1,5 @@
-with dates as (select * from {{ ref('int_dates') }}),
+with
+    dates as (select * from {{ ref('int_dates') }}),
     geographies as (select * from {{ ref('int_geographies') }}),
 
     cross_join_dates as (

@@ -4,6 +4,7 @@ with
     blocks as (select * from {{ ref('stg_blocks') }}),
     sectors as (select * from {{ ref('stg_sectors') }}),
     centres as (select * from {{ ref('stg_centres') }}),
+    dost_team as (select * from {{ ref('stg_dost_team') }}),
 
     state_level as (
         select
@@ -19,7 +20,6 @@ with
             cast(null as string) as is_balvatika
         from states
     ),
-
     district_level as (
         select
             state_id, state_name,
@@ -35,7 +35,6 @@ with
         from state_level
         inner join districts using (state_id)
     ),
-
     block_level as (
         select
             state_id, state_name,
@@ -51,7 +50,6 @@ with
         from district_level
         inner join blocks using (district_id)
     ),
-
     sector_level as (
         select
             state_id, state_name,
@@ -67,7 +65,6 @@ with
         from block_level
         inner join sectors using (block_id)
     ),
-
     centre_level as (
         select
             state_id, state_name,
@@ -83,7 +80,6 @@ with
         from sector_level
         inner join centres using (sector_id)
     ),
-
     union_all_levels as (
         select * from state_level
         union all
@@ -95,7 +91,6 @@ with
         union all
         select * from centre_level
     ),
-
     rollup_total_beneficiaries as (
         select
             * except (total_beneficiaries),
@@ -114,8 +109,16 @@ with
             sector_assigned_to as sector_assigned_to_id
         from rollup_total_beneficiaries
         left join sectors using (sector_id)
+    ),
+    add_sector_assigned_to_info as (
+        select
+            add_dost_team_info.*,
+            dost_member_name as sector_assigned_to_name,
+            role as sector_assigned_to_role,
+        from add_dost_team_info
+        left join dost_team on dost_team_id = sector_assigned_to_id
     )
 
 select
     *
-from add_dost_team_info
+from add_sector_assigned_to_info
