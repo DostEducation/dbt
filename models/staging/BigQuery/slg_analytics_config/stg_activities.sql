@@ -16,6 +16,7 @@ with
             engagement_type,
             other_engagement_type,
             follow_up_done_by,
+            channel_type,
             safe_cast(no_of_sdp_attended as int) no_of_sdp_attended,
             safe_cast(no_of_cdpo_attended as int) no_of_cdpo_attended,
             safe_cast(no_of_dpo_attended as int) no_of_dpo_attended,
