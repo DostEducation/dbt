@@ -5,7 +5,9 @@ with
     join_tables as (
         select
             database_registrations.*,
-            registration_on_app
+            registration_on_app,
+            centres_visited,
+            centres_available
         from database_registrations
         full outer join app_registrations using (activity_level, activity_level_id,date)
     ),
