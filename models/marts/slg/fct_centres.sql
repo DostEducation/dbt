@@ -9,20 +9,13 @@ with activities as (select * from {{ ref('fct_activities') }} where activity_lev
         from geography
         left join activities using (centre_id)
     ),
-    add_dost_team_name as (
-        select
-            join_the_two.*,
-            dost_member_name as sector_assigned_to_name
-        from join_the_two
-        left join dost_team on sector_assigned_to_id = dost_team_id
-    ),
     select_latest_record as (
         select
             *,
             row_number() over (
                 partition by centre_id order by date_of_meeting desc
             ) as row_number
-        from add_dost_team_name
+        from join_the_two
     )
 
 select
