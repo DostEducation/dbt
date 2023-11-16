@@ -1,7 +1,6 @@
 with
     activities as (select * from {{ ref('fct_activities') }} where activity_level = 'Centre' and activity_type = 'Centre Visit Onboarding'),
     geography as (select * from {{ ref('int_geographies') }} where activity_level = 'Centre'),
-    dost_team as (select * from {{ ref('stg_dost_team') }}),
     
     join_georaphies_and_activities as (
         select
