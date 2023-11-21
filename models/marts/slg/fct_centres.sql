@@ -11,7 +11,6 @@ with
             left join activities using (centre_id)
         where geography.activity_level = 'Centre'
     ),
-
     add_row_number_by_date_of_meeting as (
         select
             *,
