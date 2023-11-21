@@ -6,12 +6,13 @@ with
     -- Registrations
     calculate_sectorwise_registrations_on_database as (
         select
+            block_name,
             sector_name,
             cast(user_created_on as date) as date,
             count(distinct user_phone) as registrations_on_database
         from registrations
         where user_created_on >= '2021-06-01' and sector_name is not null
-        group by 1, 2
+        group by 1, 2,3
     ),
     calculate_blockwise_registrations_on_database as (
         select
@@ -22,11 +23,20 @@ with
         where user_created_on >= '2021-06-01' and sector_name is null
         group by 1, 2
     ),
+    calculate_districtwise_registrations_on_database as (
+        select
+            district_name,
+            cast(user_created_on as date) as date,
+            count(distinct user_phone) as registrations_on_database
+        from registrations
+        where user_created_on >= '2021-06-01' and sector_name is null and block_name = 'N/A'
+        group by 1, 2
+    ),
     join_sectorwise_registrations_on_database as (
         select
             * 
         from cross_join_dates
-        left join calculate_sectorwise_registrations_on_database using (date,sector_name)
+        left join calculate_sectorwise_registrations_on_database using (date,sector_name, block_name)
         where activity_level = 'Sector'
     ),
     join_blockwise_registrations_on_database as (
@@ -36,6 +46,13 @@ with
         left join calculate_blockwise_registrations_on_database using (date,block_name)
         where activity_level = 'Block'
     ),
+    join_districtwise_registrations_on_database as (
+        select
+            * 
+        from cross_join_dates
+        left join calculate_districtwise_registrations_on_database using (date,district_name)
+        where activity_level = 'District'
+    ),
     append_sector_block_registration as (
         select
             *
@@ -44,6 +61,10 @@ with
         select
             *
         from join_blockwise_registrations_on_database
+        union all
+        select
+            *
+        from join_districtwise_registrations_on_database
     ),
     add_appended_data_to_cross_join_table as (
         select
@@ -165,4 +186,3 @@ with
 
 select *
 from join_signup_with_main_table
-
