@@ -37,6 +37,15 @@ with
         where sector_name is null and (block_name = 'N/A' or block_name is null) and district_name is not null
         group by 1, 2, 3
     ),
+    calculate_statewise_registrations_on_database as (
+        select
+            state_name,
+            cast(user_created_on as date) as date,
+            count(distinct user_phone) as registrations_on_database
+        from registrations
+        where sector_name is null and (block_name = 'N/A' or block_name is null) and district_name is null
+        group by 1, 2
+    ),
     join_sectorwise_registrations_on_database as (
         select
             * 
@@ -58,18 +67,25 @@ with
         left join calculate_districtwise_registrations_on_database using (date, state_name, district_name)
         where activity_level = 'District'
     ),
-    append_sector_block_registration as (
+    join_statewise_registrations_on_database as (
         select
-            *
+            * 
+        from date_geographies
+        left join calculate_statewise_registrations_on_database using (date, state_name)
+        where activity_level = 'State'
+    ),
+    append_sector_block_registration as (
+        select *
         from join_sectorwise_registrations_on_database
         union all
-        select
-            *
+        select *
         from join_blockwise_registrations_on_database
         union all
-        select
-            *
+        select *
         from join_districtwise_registrations_on_database
+        union all
+        select *
+        from join_statewise_registrations_on_database
     ),
     add_appended_data_to_cross_join_table as (
         select
