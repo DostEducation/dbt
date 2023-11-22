@@ -156,7 +156,26 @@ with
             cast(user_registered_on as date) as date,
             count(distinct user_phone) as signups
         from select_latest_record
-        where user_signed_up_to_uk_program_on is not null and user_registered_on >= '2021-06-01' and sector_name is null
+        where user_signed_up_to_uk_program_on is not null and user_registered_on >= '2021-06-01' and sector_name is null and (block_name != 'N/A' or block_name is not null)
+        group by 1,2
+    ),
+    calculate_signups_districtwise as (
+        select
+            state_name,
+            district_name,
+            cast(user_registered_on as date) as date,
+            count(distinct user_phone) as signups
+        from select_latest_record
+        where user_signed_up_to_uk_program_on is not null and user_registered_on >= '2021-06-01' and sector_name is null and (block_name = 'N/A' or block_name is null) and district_name is not null
+        group by 1,2,3
+    ),
+    calculate_signups_statewise as (
+        select
+            state_name,
+            cast(user_registered_on as date) as date,
+            count(distinct user_phone) as signups
+        from select_latest_record
+        where user_signed_up_to_uk_program_on is not null and user_registered_on >= '2021-06-01' and sector_name is null and (block_name = 'N/A' or block_name is null) and district_name is null
         group by 1,2
     ),
     join_signups_sectorwise as (
@@ -173,14 +192,32 @@ with
         left join calculate_signups_blockwise using (date,block_name)
         where activity_level = 'Block'
     ),
-    append_signups as (
+    join_signups_districtwise as (
         select
-            *
+            * 
+        from date_geographies
+        left join calculate_signups_districtwise using (date,district_name, state_name)
+        where activity_level = 'District'
+    ),
+    join_signups_statewise as (
+        select
+            * 
+        from date_geographies
+        left join calculate_signups_statewise using (date,state_name)
+        where activity_level = 'State'
+    ),
+    append_signups as (
+        select *
         from join_signups_sectorwise
         union all
-        select
-            *
+        select *
         from join_signups_blockwise
+        union all
+        select *
+        from join_signups_districtwise
+        union all
+        select *
+        from join_signups_statewise
     ),
     add_signups_to_cross_join_table as (
         select
