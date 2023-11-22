@@ -125,8 +125,12 @@ with
             AND prompt_response.data_source= reg.data_source
             AND RIGHT(prompt_response.user_phone, 10) = RIGHT(reg.user_phone, 10)
             AND prompt_response.response LIKE '%PROGRAM-OPTIN%'
-            AND (prompt_response.response LIKE '%B-3%'
-            OR prompt_response.response LIKE '%T-6%')
+            AND (
+                prompt_response.response LIKE '%B-3%'
+                OR prompt_response.response LIKE '%T-6%'
+                OR prompt_response.response LIKE '%PROGRAM-OPTIN_1%'  -- FOR UP  
+                OR prompt_response.response LIKE '%PROGRAM-OPTIN_2%'  -- FOR UP 
+                )
     ),
     partitioned_users AS (
         SELECT *, ROW_NUMBER() 
