@@ -47,6 +47,10 @@ with
                 then 'Nainital'
                 when district_name = 'Pauri Gharwal'
                 then 'Pauri Garhwal'
+                when district_name = 'BALRAMPUR' 
+                then 'Balrampur'
+                when district_name = 'BAHRAICH'
+                then 'Bahraich'
                 else district_name
             end as district_name,
             case

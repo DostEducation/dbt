@@ -1,55 +1,97 @@
 with    
-    registrations as (select * from {{ ref("stg_registration") }}),
+    registrations as (select * from {{ ref("stg_registration") }} where user_created_on >= '2021-06-01'),
     prompt_response as (select * from {{ ref('stg_ivr_prompt_response') }}),
-    cross_join_dates as (select * from {{ ref('int_date_geographies') }}),
+    date_geographies as (select * from {{ ref('int_date_geographies') }}),
 
     -- Registrations
     calculate_sectorwise_registrations_on_database as (
         select
+            state_name,
+            district_name,
+            block_name,
             sector_name,
             cast(user_created_on as date) as date,
             count(distinct user_phone) as registrations_on_database
         from registrations
-        where user_created_on >= '2021-06-01' and sector_name is not null
-        group by 1, 2
+        where sector_name is not null
+        group by 1, 2, 3, 4, 5
     ),
     calculate_blockwise_registrations_on_database as (
         select
-            block_name as block_name,
+            state_name,
+            district_name,
+            block_name,
             cast(user_created_on as date) as date,
             count(distinct user_phone) as registrations_on_database
         from registrations
-        where user_created_on >= '2021-06-01' and sector_name is null
+        where sector_name is null and (block_name != 'N/A' or block_name is not null)
+        group by 1, 2, 3, 4
+    ),
+    calculate_districtwise_registrations_on_database as (
+        select
+            state_name,
+            initcap(district_name) as district_name,
+            cast(user_created_on as date) as date,
+            count(distinct user_phone) as registrations_on_database
+        from registrations
+        where sector_name is null and (block_name = 'N/A' or block_name is null) and district_name is not null
+        group by 1, 2, 3
+    ),
+    calculate_statewise_registrations_on_database as (
+        select
+            state_name,
+            cast(user_created_on as date) as date,
+            count(distinct user_phone) as registrations_on_database
+        from registrations
+        where sector_name is null and (block_name = 'N/A' or block_name is null) and district_name is null
         group by 1, 2
     ),
     join_sectorwise_registrations_on_database as (
         select
             * 
-        from cross_join_dates
-        left join calculate_sectorwise_registrations_on_database using (date,sector_name)
+        from date_geographies
+        left join calculate_sectorwise_registrations_on_database using (date, state_name, district_name, block_name, sector_name)
         where activity_level = 'Sector'
     ),
     join_blockwise_registrations_on_database as (
         select
             * 
-        from cross_join_dates
-        left join calculate_blockwise_registrations_on_database using (date,block_name)
+        from date_geographies
+        left join calculate_blockwise_registrations_on_database using (date, state_name, district_name, block_name)
         where activity_level = 'Block'
     ),
-    append_sector_block_registration as (
+    join_districtwise_registrations_on_database as (
         select
-            *
+            * 
+        from date_geographies
+        left join calculate_districtwise_registrations_on_database using (date, state_name, district_name)
+        where activity_level = 'District'
+    ),
+    join_statewise_registrations_on_database as (
+        select
+            * 
+        from date_geographies
+        left join calculate_statewise_registrations_on_database using (date, state_name)
+        where activity_level = 'State'
+    ),
+    append_sector_block_registration as (
+        select *
         from join_sectorwise_registrations_on_database
         union all
-        select
-            *
+        select *
         from join_blockwise_registrations_on_database
+        union all
+        select *
+        from join_districtwise_registrations_on_database
+        union all
+        select *
+        from join_statewise_registrations_on_database
     ),
     add_appended_data_to_cross_join_table as (
         select
-            cross_join_dates.*,
+            date_geographies.*,
             append_sector_block_registration.registrations_on_database
-        from cross_join_dates
+        from date_geographies
         left join append_sector_block_registration using (activity_level, activity_level_id,date)
     ),
     rollup_registrations_on_database as (
@@ -83,8 +125,12 @@ with
             AND prompt_response.data_source= reg.data_source
             AND RIGHT(prompt_response.user_phone, 10) = RIGHT(reg.user_phone, 10)
             AND prompt_response.response LIKE '%PROGRAM-OPTIN%'
-            AND (prompt_response.response LIKE '%B-3%'
-            OR prompt_response.response LIKE '%T-6%')
+            AND (
+                prompt_response.response LIKE '%B-3%'
+                OR prompt_response.response LIKE '%T-6%'
+                OR prompt_response.response LIKE '%PROGRAM-OPTIN_1%'  -- FOR UP  
+                OR prompt_response.response LIKE '%PROGRAM-OPTIN_2%'  -- FOR UP 
+                )
     ),
     partitioned_users AS (
         SELECT *, ROW_NUMBER() 
@@ -116,14 +162,14 @@ with
     join_signups_sectorwise as (
         select
             * 
-        from cross_join_dates
+        from date_geographies
         left join calculate_signups_sectorwise using (date,sector_name)
         where activity_level = 'Sector'
     ),
     join_signups_blockwise as (
         select
             * 
-        from cross_join_dates
+        from date_geographies
         left join calculate_signups_blockwise using (date,block_name)
         where activity_level = 'Block'
     ),
@@ -138,9 +184,9 @@ with
     ),
     add_signups_to_cross_join_table as (
         select
-            cross_join_dates.*,
+            date_geographies.*,
             signups
-        from cross_join_dates
+        from date_geographies
         left join append_signups using (activity_level, activity_level_id,date)
     ),
     rollup_signups as (
@@ -165,4 +211,3 @@ with
 
 select *
 from join_signup_with_main_table
-
